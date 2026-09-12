@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - HILTON CARGO</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../home-assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../home-assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../home-assets/css/aos.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0f4f8;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 260px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .sidebar-title {
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 15px 25px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: #fbbf24;
+        }
+
+        .menu-item i {
+            width: 25px;
+            margin-right: 12px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-search {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-bell {
+            font-size: 20px;
+            color: #64748b;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+        }
+
+        .stat-icon.yellow {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+            color: #6b21a8;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stat-change.down {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 25px;
+        }
+
+        /* Table Card */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        /* Table */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-in-transit {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-delivered {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Sidebar Toggle for Mobile */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #1e293b;
+            cursor: pointer;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -260px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <img src="../images/hiltonlogo.png" alt="Logo">
+            </div>
+            <div class="sidebar-title">HILTON CARGO</div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="index.html" class="menu-item active">
+                <i class="fas fa-th-large"></i>
+                Dashboard
+            </a>
+            <a href="shipments.html" class="menu-item">
+                <i class="fas fa-shipping-fast"></i>
+                Shipments
+            </a>
+            <a href="tracking.html" class="menu-item">
+                <i class="fas fa-map-marker-alt"></i>
+                Tracking
+            </a>
+            <a href="customers.html" class="menu-item">
+                <i class="fas fa-users"></i>
+                Customers
+            </a>
+            <a href="services.html" class="menu-item">
+                <i class="fas fa-concierge-bell"></i>
+                Services
+            </a>
+            <a href="reports.html" class="menu-item">
+                <i class="fas fa-chart-bar"></i>
+                Reports
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+            <a href="../index.htm" class="menu-item">
+                <i class="fas fa-arrow-left"></i>
+                Back to Website
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="navbar-search">
+                <input type="text" class="search-input" placeholder="Search...">
+            </div>
+
+            <div class="navbar-actions">
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <div>
+                        <strong style="font-size:14px;">Admin</strong>
+                        <br>
+                        <small style="color:#64748b;">Administrator</small>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <section class="dashboard-content">
+            <div class="page-header">
+                <h1 class="page-title">Welcome back, Admin! 👋</h1>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-value" id="totalShipments">0</div>
+                            <div class="stat-label">Total Shipments</div>
+                        </div>
+                        <div class="stat-icon blue">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-value" id="totalRevenue">$0</div>
+                            <div class="stat-label">Estimated Revenue</div>
+                        </div>
+                        <div class="stat-icon green">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-value" id="totalCustomers">0</div>
+                            <div class="stat-label">Customers</div>
+                        </div>
+                        <div class="stat-icon yellow">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-value" id="totalServices">0</div>
+                            <div class="stat-label">Services</div>
+                        </div>
+                        <div class="stat-icon purple">
+                            <i class="fas fa-concierge-bell"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Recent Shipments Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Shipments</h3>
+                        <a href="shipments.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add New
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tracking No</th>
+                                    <th>Customer</th>
+                                    <th>Origin</th>
+                                    <th>Destination</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentShipmentsBody">
+                                <tr>
+                                    <td colspan="6" style="text-align:center; padding:40px; color:#64748b;">
+                                        <i class="fas fa-loading fa-spin"></i> Loading shipments...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Quick Actions</h3>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <a href="shipments.html" class="btn btn-primary" style="justify-content:center;">
+                            <i class="fas fa-plus-circle"></i>
+                            Create New Shipment
+                        </a>
+                        <a href="tracking.html" class="btn btn-success" style="justify-content:center;">
+                            <i class="fas fa-search"></i>
+                            Track a Package
+                        </a>
+                        <a href="reports.html" class="btn" style="justify-content:center; background:linear-gradient(135deg, #8b5cf6, #6d28d9); color:white;">
+                            <i class="fas fa-file-pdf"></i>
+                            Generate Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../home-assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="../home-assets/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle Sidebar for Mobile
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                // Fetch all data in parallel
+                const [shipmentsRes, customersRes, servicesRes] = await Promise.all([
+                    fetch('/api/shipments'),
+                    fetch('/api/customers'),
+                    fetch('/api/services')
+                ]);
+
+                const shipments = await shipmentsRes.json();
+                const customers = await customersRes.json();
+                const services = await servicesRes.json();
+
+                // Update stats
+                document.getElementById('totalShipments').textContent = shipments.length;
+                document.getElementById('totalCustomers').textContent = customers.length;
+                document.getElementById('totalServices').textContent = services.length;
+                
+                // Estimate revenue based on service prices
+                let estimatedRevenue = 0;
+                const servicePriceMap = {};
+                services.forEach(service => {
+                    servicePriceMap[service.name] = service.price;
+                });
+                
+                shipments.forEach(shipment => {
+                    const price = servicePriceMap[shipment.service_type] || 100;
+                    estimatedRevenue += price;
+                });
+                
+                document.getElementById('totalRevenue').textContent = '$' + estimatedRevenue.toLocaleString();
+
+                // Render recent shipments
+                const recentShipments = shipments.slice(0, 5).reverse();
+                const tbody = document.getElementById('recentShipmentsBody');
+                
+                if (recentShipments.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding:40px; color:#64748b;">
+                                <i class="fas fa-box" style="font-size: 48px; margin-bottom: 15px; color: #cbd5e1;"></i>
+                                <p>No shipments yet</p>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    tbody.innerHTML = recentShipments.map(shipment => {
+                        let statusClass = 'status-pending';
+                        let statusText = 'Pending';
+                        
+                        if (shipment.status === 'in_transit') {
+                            statusClass = 'status-in-transit';
+                            statusText = 'In Transit';
+                        } else if (shipment.status === 'delivered') {
+                            statusClass = 'status-delivered';
+                            statusText = 'Delivered';
+                        } else if (shipment.status === 'cancelled') {
+                            statusClass = 'status-cancelled';
+                            statusText = 'Cancelled';
+                        }
+                        
+                        return `
+                            <tr>
+                                <td><strong>${shipment.tracking_number || 'N/A'}</strong></td>
+                                <td>${shipment.customer_name || 'N/A'}</td>
+                                <td>${shipment.origin || 'N/A'}</td>
+                                <td>${shipment.destination || 'N/A'}</td>
+                                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                                <td><a href="tracking.html?tracking=${shipment.tracking_number || shipment.id}" class="btn btn-primary" style="padding:5px 10px; font-size:12px;">View</a></td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        // Initialize
+        loadDashboardData();
+    </script>
+</body>
+</html>

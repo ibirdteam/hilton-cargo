@@ -1,0 +1,892 @@
+Uri: https://airaramex.com/
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\index.htm
+Content Type: text/html
+
+Uri: https://airaramex.com/about
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\about.html
+Content Type: text/html
+
+Uri: https://airaramex.com/contact
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\contact.html
+Content Type: text/html
+
+Uri: https://airaramex.com/home-assets/css/animate.min.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\animate.min.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/aos.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\aos.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/bootstrap.min.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\bootstrap.min.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/default-icons.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\default-icons.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/default.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\default.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/flaticon.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\flaticon.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/fontawesome-all.min.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\fontawesome-all.min.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/jquery-ui.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\jquery-ui.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/magnific-popup.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\magnific-popup.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/main.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\main.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/odometer.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\odometer.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/css/swiper-bundle.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\css\swiper-bundle.css
+Content Type: text/css
+
+Uri: https://airaramex.com/home-assets/fonts/fa-brands-400.eot
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-brands-400.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/fonts/fa-brands-400.svg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-brands-400.svg
+Content Type: image/svg+xml
+
+Uri: https://airaramex.com/home-assets/fonts/fa-brands-400.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-brands-400.ttf
+Content Type: font/ttf
+
+Uri: https://airaramex.com/home-assets/fonts/fa-brands-400.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-brands-400.woff
+Content Type: font/woff
+
+Uri: https://airaramex.com/home-assets/fonts/fa-brands-400.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-brands-400.woff2
+Content Type: font/woff2
+
+Uri: https://airaramex.com/home-assets/fonts/fa-brands-400d41d.eot
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-brands-400d41d.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/fonts/fa-regular-400.eot
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-regular-400.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/fonts/fa-regular-400.svg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-regular-400.svg
+Content Type: image/svg+xml
+
+Uri: https://airaramex.com/home-assets/fonts/fa-regular-400.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-regular-400.ttf
+Content Type: font/ttf
+
+Uri: https://airaramex.com/home-assets/fonts/fa-regular-400.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-regular-400.woff
+Content Type: font/woff
+
+Uri: https://airaramex.com/home-assets/fonts/fa-regular-400.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-regular-400.woff2
+Content Type: font/woff2
+
+Uri: https://airaramex.com/home-assets/fonts/fa-regular-400d41d.eot
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-regular-400d41d.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/fonts/fa-solid-900.eot
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-solid-900.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/fonts/fa-solid-900.svg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-solid-900.svg
+Content Type: image/svg+xml
+
+Uri: https://airaramex.com/home-assets/fonts/fa-solid-900.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-solid-900.ttf
+Content Type: font/ttf
+
+Uri: https://airaramex.com/home-assets/fonts/fa-solid-900.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-solid-900.woff
+Content Type: font/woff
+
+Uri: https://airaramex.com/home-assets/fonts/fa-solid-900.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-solid-900.woff2
+Content Type: font/woff2
+
+Uri: https://airaramex.com/home-assets/fonts/fa-solid-900d41d.eot
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\fa-solid-900d41d.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/fonts/flat-icon/flaticon_tg_defaultbada.eot?e3deef4d25a8a816ffcc2046eac5a266
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flat-icon\flaticon_tg_defaultbada.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/fonts/flat-icon/flaticon_tg_defaultbada.svg?e3deef4d25a8a816ffcc2046eac5a266
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flat-icon\flaticon_tg_defaultbada.svg
+Content Type: image/svg+xml
+
+Uri: https://airaramex.com/home-assets/fonts/flat-icon/flaticon_tg_defaultbada.ttf?e3deef4d25a8a816ffcc2046eac5a266
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flat-icon\flaticon_tg_defaultbada.ttf
+Content Type: font/ttf
+
+Uri: https://airaramex.com/home-assets/fonts/flat-icon/flaticon_tg_defaultbada.woff2?e3deef4d25a8a816ffcc2046eac5a266
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flat-icon\flaticon_tg_defaultbada.woff2
+Content Type: font/woff2
+
+Uri: https://airaramex.com/home-assets/fonts/flat-icon/flaticon_tg_defaultbada.woff?e3deef4d25a8a816ffcc2046eac5a266
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flat-icon\flaticon_tg_defaultbada.woff
+Content Type: font/woff
+
+Uri: https://airaramex.com/home-assets/fonts/flaticon_lgdt.eot
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flaticon_lgdt.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/fonts/flaticon_lgdt.svg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flaticon_lgdt.svg
+Content Type: image/svg+xml
+
+Uri: https://airaramex.com/home-assets/fonts/flaticon_lgdt.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flaticon_lgdt.ttf
+Content Type: font/ttf
+
+Uri: https://airaramex.com/home-assets/fonts/flaticon_lgdt.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flaticon_lgdt.woff
+Content Type: font/woff
+
+Uri: https://airaramex.com/home-assets/fonts/flaticon_lgdt.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flaticon_lgdt.woff2
+Content Type: font/woff2
+
+Uri: https://airaramex.com/home-assets/fonts/flaticon_lgdtd41d.eot
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\fonts\flaticon_lgdtd41d.eot
+Content Type: application/vnd.ms-fontobject
+
+Uri: https://airaramex.com/home-assets/img/banner/banner_img01.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\banner\banner_img01.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/banner/banner_img02.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\banner\banner_img02.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/banner/banner_shape.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\banner\banner_shape.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/brand/brand_img01.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\brand\brand_img01.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/brand/brand_img02.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\brand\brand_img02.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/brand/brand_img03.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\brand\brand_img03.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/brand/brand_img04.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\brand\brand_img04.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/brand/brand_img05.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\brand\brand_img05.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/brand/brand_img06.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\brand\brand_img06.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/icon/right_arrow.svg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\icon\right_arrow.svg
+Content Type: image/svg+xml
+
+Uri: https://airaramex.com/home-assets/img/icon/star.svg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\icon\star.svg
+Content Type: image/svg+xml
+
+Uri: https://airaramex.com/home-assets/img/images/about_img01.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\about_img01.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/about_img02.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\about_img02.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/about_img03.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\about_img03.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/about_shape.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\about_shape.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/author01.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\author01.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/author02.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\author02.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/author03.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\author03.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/author04.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\author04.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/choose_img01.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\choose_img01.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/images/cta_shape.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\cta_shape.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/features_shape.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\features_shape.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/footer_shape01.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\footer_shape01.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/footer_shape02.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\footer_shape02.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/images/inner_about_img01.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\inner_about_img01.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/images/inner_about_img02.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\images\inner_about_img02.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/services/mask_img.svg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\mask_img.svg
+Content Type: image/svg+xml
+
+Uri: https://airaramex.com/home-assets/img/services/services_img01.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\services_img01.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/services/services_img02.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\services_img02.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/services/services_img03.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\services_img03.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/services/services_img04.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\services_img04.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/services/services_img07.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\services_img07.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/services/services_img08.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\services_img08.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/home-assets/img/services/services_shape01.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\services_shape01.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/img/services/services_shape02.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\img\services\services_shape02.png
+Content Type: image/png
+
+Uri: https://airaramex.com/home-assets/js/ajax-form.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\ajax-form.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/aos.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\aos.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/bootstrap.bundle.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\bootstrap.bundle.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/jquery-ui.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\jquery-ui.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/jquery.appear.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\jquery.appear.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/jquery.counterup.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\jquery.counterup.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/jquery.magnific-popup.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\jquery.magnific-popup.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/jquery.marquee.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\jquery.marquee.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/main.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\main.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/pages.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\pages.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/svg-inject.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\svg-inject.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/swiper-bundle.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\swiper-bundle.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/vendor/jquery-3.6.0.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\vendor\jquery-3.6.0.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/home-assets/js/wow.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\home-assets\js\wow.min.js
+Content Type: application/javascript
+
+Uri: https://airaramex.com/services
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\services.html
+Content Type: text/html
+
+Uri: https://airaramex.com/temp/images/icon-infobox.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\icon-infobox.png
+Content Type: image/png
+
+Uri: https://airaramex.com/temp/images/icon01.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\icon01.png
+Content Type: image/png
+
+Uri: https://airaramex.com/temp/images/icon02.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\icon02.png
+Content Type: image/png
+
+Uri: https://airaramex.com/temp/images/icon03.png
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\icon03.png
+Content Type: image/png
+
+Uri: https://airaramex.com/temp/images/logo01.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\logo01.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/logo02.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\logo02.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/logo03.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\logo03.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/logo04.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\logo04.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/side-image01.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\side-image01.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/side-image02.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\side-image02.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/solution-image01.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\solution-image01.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/solution-image02.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\solution-image02.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/solution-image03.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\solution-image03.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/solution-image04.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\solution-image04.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/temp/images/solution-image05.jpg
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\temp\images\solution-image05.jpg
+Content Type: image/jpeg
+
+Uri: https://airaramex.com/track
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\track.html
+Content Type: text/html
+
+Uri: https://cdn.tailwindcss.com/3.4.17
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\3.4.17
+Content Type: text/javascript
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\css\all.min.css
+Content Type: text/css
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\webfonts\fa-brands-400.ttf
+Content Type: application/octet-stream
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\webfonts\fa-brands-400.woff2
+Content Type: application/octet-stream
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-regular-400.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\webfonts\fa-regular-400.ttf
+Content Type: application/octet-stream
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-regular-400.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\webfonts\fa-regular-400.woff2
+Content Type: application/octet-stream
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\webfonts\fa-solid-900.ttf
+Content Type: application/octet-stream
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\webfonts\fa-solid-900.woff2
+Content Type: application/octet-stream
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-v4compatibility.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\webfonts\fa-v4compatibility.ttf
+Content Type: application/octet-stream
+
+Uri: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-v4compatibility.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\ajax\libs\font-awesome\6.0.0-beta3\webfonts\fa-v4compatibility.woff2
+Content Type: application/octet-stream
+
+Uri: https://code.jquery.com/jquery-3.6.0.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\jquery-3.6.0.min.js
+Content Type: application/javascript
+
+Uri: https://fonts.bunny.net/css?family=playfair-display:400,500,600,700|montserrat:300,400,500,600,700&display=swap
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\css
+Content Type: text/css
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-300-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-300-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-300-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-300-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-300-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-300-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-300-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-300-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-cyrillic-ext-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-cyrillic-ext-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-300-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-300-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-300-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-300-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-300-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-300-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-300-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-300-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-latin-ext-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-latin-ext-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-300-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-300-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-300-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-300-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/montserrat/files/montserrat-vietnamese-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\montserrat\files\montserrat-vietnamese-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-cyrillic-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-cyrillic-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-cyrillic-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-cyrillic-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-cyrillic-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-cyrillic-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-cyrillic-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-cyrillic-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-cyrillic-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-cyrillic-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-cyrillic-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-cyrillic-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-cyrillic-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-cyrillic-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-cyrillic-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-cyrillic-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-ext-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-ext-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-ext-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-ext-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-ext-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-ext-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-ext-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-ext-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-ext-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-ext-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-ext-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-ext-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-ext-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-ext-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-latin-ext-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-latin-ext-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-vietnamese-400-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-vietnamese-400-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-vietnamese-400-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-vietnamese-400-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-vietnamese-500-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-vietnamese-500-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-vietnamese-500-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-vietnamese-500-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-vietnamese-600-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-vietnamese-600-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-vietnamese-600-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-vietnamese-600-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-vietnamese-700-normal.woff
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-vietnamese-700-normal.woff
+Content Type: font/woff
+
+Uri: https://fonts.bunny.net/playfair-display/files/playfair-display-vietnamese-700-normal.woff2
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\playfair-display\files\playfair-display-vietnamese-700-normal.woff2
+Content Type: font/woff2
+
+Uri: https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\css2
+Content Type: text/css
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVhJx26TKEr37c9aBBJmg.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVhJx26TKEr37c9aBBJmg.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVjJx26TKEr37c9WBI.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVjJx26TKEr37c9WBI.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVkJx26TKEr37c9aBBxbl8s7g.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVkJx26TKEr37c9aBBxbl8s7g.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVkJx26TKEr37c9aBBxJlks7g.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVkJx26TKEr37c9aBBxJlks7g.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVkJx26TKEr37c9aBBxNl4s7g.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVkJx26TKEr37c9aBBxNl4s7g.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVkJx26TKEr37c9aBBxOlos7g.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVkJx26TKEr37c9aBBxOlos7g.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVkJx26TKEr37c9aBBxQlgs7g.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVkJx26TKEr37c9aBBxQlgs7g.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVmJx26TKEr37c9YK5sulw.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVmJx26TKEr37c9YK5sulw.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVmJx26TKEr37c9YL5rulw.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVmJx26TKEr37c9YL5rulw.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVmJx26TKEr37c9YLJvulw.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVmJx26TKEr37c9YLJvulw.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVmJx26TKEr37c9YMptulw.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVmJx26TKEr37c9YMptulw.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/sarabun/v17/DtVmJx26TKEr37c9YOZqulw.ttf
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\s\sarabun\v17\DtVmJx26TKEr37c9YOZqulw.ttf
+Content Type: font/ttf
+
+Uri: https://images.unsplash.com/photo-1553413077-190dd305871c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\photo-1553413077-190dd305871c
+Content Type: image/jpeg
+
+Uri: https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\photo-1578662996442-48f60103fc96
+Content Type: image/jpeg
+
+Uri: https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\translate_a\element.js
+Content Type: text/javascript
+
+Uri: https://unpkg.com/alpinejs%403.14.9/dist/cdn.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\alpinejs@3.14.9\dist\cdn.min.js
+Content Type: text/javascript
+
+Uri: https://unpkg.com/alpinejs@3.14.9/dist/cdn.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\alpinejs@3.14.9\dist\cdn.min-1.js
+Content Type: text/javascript
+
+Uri: https://unpkg.com/alpinejs@3.15.12/dist/cdn.min.js
+File Name: C:\Users\user\Desktop\qauntuz\airaramex.com\alpinejs@3.15.12\dist\cdn.min.js
+Content Type: text/javascript
+
