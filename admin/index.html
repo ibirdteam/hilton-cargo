@@ -703,6 +703,20 @@
                 }
             } catch (error) {
                 console.error('Error loading dashboard data:', error);
+                document.getElementById('totalShipments').textContent = '—';
+                document.getElementById('totalRevenue').textContent = '$0';
+                document.getElementById('totalCustomers').textContent = '—';
+                document.getElementById('totalServices').textContent = '—';
+                const tbody = document.getElementById('recentShipmentsBody');
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center; padding:40px; color:#991b1b;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 15px; color: #fca5a5;"></i>
+                            <p style="font-weight:600; margin-bottom:5px;">Failed to load data</p>
+                            <p style="font-size:13px; color:#64748b;">${error.message || 'Please check server connection and refresh.'}</p>
+                        </td>
+                    </tr>
+                `;
             }
         }
 

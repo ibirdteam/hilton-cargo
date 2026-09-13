@@ -8,7 +8,7 @@
     <link href="images/hiltonlogo.png" rel="apple-touch-icon">
     <link href="images/hiltonlogo.png" rel="shortcut icon">
     <title>Track Shipment | HILTON CARGO Pro V2.1</title>
-    
+
     <!-- CSS here -->
     <link rel="stylesheet" href="home-assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="home-assets/css/animate.min.css">
@@ -17,7 +17,11 @@
     <link rel="stylesheet" href="home-assets/css/aos.css">
     <link rel="stylesheet" href="home-assets/css/default.css">
     <link rel="stylesheet" href="home-assets/css/main.css">
-    
+
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net/">
     <link href="css?family=playfair-display:400,500,600,700|montserrat:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -36,6 +40,11 @@
                         display: ['Playfair Display', 'serif'],
                     },
                     colors: {
+                        navy: {
+                            DEFAULT: '#001B90',
+                            dark: '#001473',
+                            light: '#1a33a6',
+                        },
                         horizon: {
                             50: '#f0f9f5',
                             100: '#daf0e5',
@@ -50,8 +59,8 @@
                             950: '#0c2119',
                         },
                         gold: {
-                            400: '#fcd34d',
-                            500: '#fcb529',
+                            400: '#fde047',
+                            500: '#fbbf24',
                             600: '#f59e0b',
                         },
                         secondary: {
@@ -73,7 +82,8 @@
                         'slide-up': 'slideUp 0.5s ease-out',
                         'slide-down': 'slideDown 0.3s ease-out',
                         'scale': 'scale 0.3s ease-in-out',
-                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-gold': 'pulseGold 1.8s infinite',
+                        'dash': 'dash 20s linear infinite',
                     },
                     keyframes: {
                         fadeIn: {
@@ -92,12 +102,22 @@
                             '0%': { transform: 'scale(0.95)', opacity: '0' },
                             '100%': { transform: 'scale(1)', opacity: '1' },
                         },
+                        pulseGold: {
+                            '0%, 100%': { boxShadow: '0 4px 14px rgba(251, 191, 36, 0.4)' },
+                            '50%': { boxShadow: '0 4px 22px rgba(251, 191, 36, 0.65)' },
+                        },
+                        dash: {
+                            to: { 'stroke-dashoffset': '-1000' },
+                        },
                     },
                     boxShadow: {
                         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'card': '0 4px 22px rgba(0, 0, 0, 0.05)',
+                        'navy': '0 4px 14px rgba(0, 27, 144, 0.25)',
+                        'gold': '0 4px 14px rgba(251, 191, 36, 0.35)',
                     },
                 },
-            },
+            }
         }
     </script>
 
@@ -105,112 +125,981 @@
     <script src="jquery-3.6.0.min.js"></script>
     <script src="alpinejs@3.15.12/dist/cdn.min.js" defer></script>
 
+    <!-- Leaflet Map JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <style>
         [x-cloak] { display: none !important; }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
+        html { scroll-behavior: smooth; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        .py-80 { padding-top: 80px; padding-bottom: 80px; }
+        .py-120 { padding-top: 120px; padding-bottom: 120px; }
+
+        [data-aos] { opacity: 1 !important; transform: none !important; }
+
+        :root {
+            --navy: #001B90;
+            --navy-dark: #001473;
+            --navy-light: #1a33a6;
+            --gold: #fbbf24;
+            --gold-dark: #f59e0b;
+            --gold-light: #fde047;
+            --white: #ffffff;
+            --off-white: #f8fafc;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
         }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
         }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-        }
-        
-        .py-80 {
-            padding-top: 80px;
-            padding-bottom: 80px;
-        }
-        .rounded-2xl {
-            border-radius: 1rem;
-        }
-        .shadow-lg {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-        }
-        .p-6 {
-            padding: 1.5rem;
-        }
-        .mb-8 {
-            margin-bottom: 2rem;
-        }
-        .p-8 {
-            padding: 2rem;
-        }
-        .rounded-xl {
-            border-radius: 0.75rem;
-        }
-        .p-4 {
-            padding: 1rem;
-        }
-        .mb-6 {
-            margin-bottom: 1.5rem;
-        }
-        .mb-2 {
-            margin-bottom: 0.5rem;
-        }
-        /* Ensure AOS elements are visible */
-        [data-aos] {
-            opacity: 1 !important;
-            transform: none !important;
-        }
-        .timeline-item {
+        /* ============== TRACKING FORM ============== */
+        .tracking-form-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 27, 144, 0.1);
+            overflow: hidden;
             position: relative;
-            padding-left: 40px;
-            padding-bottom: 30px;
         }
-        .timeline-item:before {
+
+        .tracking-form-card::before {
             content: '';
             position: absolute;
-            left: 12px;
             top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #e2e8f0;
-        }
-        .timeline-item:last-child:before {
-            bottom: 30px;
-        }
-        .timeline-dot {
-            position: absolute;
             left: 0;
-            top: 0;
-            width: 26px;
-            height: 26px;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 100%);
+        }
+
+        .tracking-input-wrap {
+            position: relative;
+        }
+
+        .tracking-input-wrap i.search-icon {
+            position: absolute;
+            left: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--navy);
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        .tracking-input {
+            width: 100%;
+            padding: 18px 24px 18px 58px;
+            border: 2px solid var(--gray-200);
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-800);
+            background: var(--gray-50);
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .tracking-input::placeholder {
+            color: var(--gray-400);
+            font-weight: 500;
+            letter-spacing: 0;
+        }
+
+        .tracking-input:focus {
+            outline: none;
+            border-color: var(--navy);
+            background: white;
+            box-shadow: 0 0 0 5px rgba(0, 27, 144, 0.08);
+        }
+
+        .btn-track {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 18px 32px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 14px rgba(0, 27, 144, 0.3);
+            white-space: nowrap;
+        }
+
+        .btn-track:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 27, 144, 0.4);
+        }
+
+        .btn-track i { color: var(--gold); }
+
+        /* ============== HEADER BADGE ============== */
+        .detail-header {
+            background: linear-gradient(135deg, #fafbff 0%, #ffffff 100%);
+            border-radius: 20px 20px 0 0;
+            padding: 28px 32px;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .detail-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .detail-logo {
+            width: 62px;
+            height: 62px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 26px;
+            font-weight: 900;
+            box-shadow: 0 6px 18px rgba(0, 27, 144, 0.25);
+        }
+
+        .detail-logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .detail-brand-name {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--navy);
+            letter-spacing: 0.5px;
+        }
+
+        .detail-brand-sub {
+            font-size: 11.5px;
+            color: var(--gray-500);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .tracking-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: white;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 14px rgba(0, 27, 144, 0.25);
+        }
+
+        .tracking-chip i { color: var(--gold); font-size: 14px; }
+
+        .status-badge-lg {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 12.5px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        .status-badge-lg::before {
+            content: '';
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #fff;
-            border: 3px solid #e2e8f0;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+        .status-pending::before {
+            background: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+        }
+
+        .status-in_transit, .status-transit {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+        .status-in_transit::before, .status-transit::before {
+            background: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+        }
+
+        .status-delivered {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+        }
+        .status-delivered::before {
+            background: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+        }
+
+        .status-cancelled {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+        }
+        .status-cancelled::before {
+            background: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+        }
+
+        .status-out_for_delivery {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            color: #6b21a8;
+        }
+        .status-out_for_delivery::before {
+            background: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.18);
+        }
+
+        /* ============== INFO GRID ============== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 1px;
+            background: var(--gray-200);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .info-item {
+            background: white;
+            padding: 16px 18px;
+            transition: background 0.2s ease;
+        }
+
+        .info-item:hover { background: var(--gray-50); }
+
+        .info-label {
+            font-size: 10.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--gray-400);
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .info-value.amount {
+            color: var(--navy);
+            font-size: 16px;
+        }
+
+        /* ============== PARTIES (Sender/Receiver) ============== */
+        .parties-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        @media (max-width: 640px) {
+            .parties-grid { grid-template-columns: 1fr; }
+        }
+
+        .party-card {
+            background: var(--gray-50);
+            border-radius: 14px;
+            padding: 20px;
+            border-left: 4px solid var(--navy);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .party-card.receiver { border-left-color: var(--danger); }
+
+        .party-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .party-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--gray-200);
+        }
+
+        .party-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .party-icon.sender {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+
+        .party-icon.receiver {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+        }
+
+        .party-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-500);
+        }
+
+        .party-name {
+            font-size: 15.5px;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .party-info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 13px;
+        }
+
+        .party-info-row i {
+            width: 16px;
+            color: var(--gray-400);
+            font-size: 12px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .party-info-row .info-text {
+            color: var(--gray-700);
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        /* ============== SECTION TITLE ============== */
+        .section-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--gray-700);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: linear-gradient(180deg, var(--navy) 0%, var(--gold) 100%);
+            border-radius: 2px;
+        }
+
+        /* ============== PROGRESS STEPS ============== */
+        .steps-bar {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 0 28px;
+            padding: 0 8px;
+        }
+
+        .steps-bar::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            top: 16px;
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: 2px;
+            z-index: 0;
+        }
+
+        .steps-bar::after {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 16px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 100%);
+            border-radius: 2px;
+            z-index: 1;
+            transition: width 0.8s ease;
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20%;
+            text-align: center;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--gray-400);
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .step.completed .step-circle {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            border-color: var(--navy);
+            color: var(--gold);
+            box-shadow: 0 4px 12px rgba(0, 27, 144, 0.3);
+        }
+
+        .step.current .step-circle {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            border-color: var(--gold);
+            color: var(--gray-900);
+            box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4);
+            animation: pulseGold 1.8s infinite;
+        }
+
+        @keyframes pulseGold {
+            0%, 100% { box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4); }
+            50% { box-shadow: 0 4px 22px rgba(251, 191, 36, 0.65); }
+        }
+
+        .step-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gray-400);
+            line-height: 1.3;
+        }
+
+        .step.completed .step-label,
+        .step.current .step-label {
+            color: var(--gray-800);
+        }
+
+        .current-location-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .current-location-pill i { color: var(--gold); font-size: 14px; }
+        .location-wrap { text-align: center; }
+
+        /* ============== MAP ============== */
+        .map-container-wrap {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 22px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--gray-100);
+        }
+
+        #shipment-map {
+            height: 380px;
+            width: 100%;
+            border-radius: 0;
             z-index: 1;
         }
-        .timeline-dot.completed {
-            background: #2a8c61;
-            border-color: #2a8c61;
+
+        .map-overlay-legend {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 500;
+            background: white;
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            font-size: 12px;
+            font-weight: 600;
         }
-        .timeline-dot.completed:after {
+
+        .map-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            color: var(--gray-700);
+        }
+
+        .map-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .map-legend-line {
+            width: 22px;
+            height: 3px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .map-distance-card {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            z-index: 500;
+            background: white;
+            border-radius: 12px;
+            padding: 12px 18px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .map-distance-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .map-distance-info .label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .map-distance-info .value {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        /* Custom Leaflet markers */
+        .navy-pin, .red-pin, .truck-pin {
+            background: none !important;
+            border: none !important;
+        }
+
+        .pin-wrap {
+            position: relative;
+            transform: translate(-50%, -100%);
+        }
+
+        .pin-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 3px solid white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pin-circle.navy {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+        }
+
+        .pin-circle.red {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .pin-circle.truck {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            color: var(--gray-900);
+            animation: pulseTruck 2s infinite;
+        }
+
+        @keyframes pulseTruck {
+            0%, 100% { box-shadow: 0 4px 12px rgba(251, 191, 36, 0.5), 0 0 0 0 rgba(251, 191, 36, 0.5); }
+            50% { box-shadow: 0 4px 20px rgba(251, 191, 36, 0.7), 0 0 0 10px rgba(251, 191, 36, 0); }
+        }
+
+        .pin-label {
+            position: absolute;
+            top: 42px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gray-800);
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--gray-100);
+        }
+
+        /* ============== TIMELINE ============== */
+        .timeline-wrap { position: relative; }
+
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--navy) 0%, var(--gold) 50%, var(--gray-200) 100%);
+            border-radius: 1px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .timeline-item:last-child { padding-bottom: 0; }
+
+        .timeline-dot {
+            position: absolute;
+            left: -32px;
+            top: 2px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.active .timeline-dot,
+        .timeline-item.done .timeline-dot {
+            border-color: var(--navy);
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+        }
+
+        .timeline-item.active .timeline-dot {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.15);
+        }
+
+        .timeline-item.done .timeline-dot::after {
             content: '\f00c';
             font-family: 'Font Awesome 5 Free';
             font-weight: 900;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 12px;
+            color: var(--gold);
+            font-size: 10px;
         }
+
+        .timeline-item.active .timeline-dot::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gray-900);
+        }
+
+        .timeline-content {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 14px 18px;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+        }
+
+        .timeline-item.active .timeline-content {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .timeline-content:hover {
+            transform: translateX(3px);
+        }
+
+        .timeline-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-status {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .timeline-time {
+            font-size: 11.5px;
+            color: var(--gray-500);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .timeline-desc {
+            font-size: 12.5px;
+            color: var(--gray-600);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .timeline-desc i {
+            color: var(--gold);
+            font-size: 11px;
+        }
+
+        /* ============== STATS CHIPS ============== */
+        .stats-chips-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .stat-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 18px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--gray-100);
+            transition: all 0.25s ease;
+        }
+
+        .stat-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .stat-chip-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .stat-chip-icon.navy {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: var(--navy);
+        }
+
+        .stat-chip-icon.blue {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+
+        .stat-chip-icon.green {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+        }
+
+        .stat-chip-icon.amber {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+
+        .stat-chip-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--gray-900);
+            line-height: 1.1;
+        }
+
+        .stat-chip-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        /* ============== CARD ============== */
+        .pro-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 22px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--gray-100);
+            overflow: hidden;
+        }
+
+        .pro-card-body { padding: 28px 30px; }
+
+        /* ============== ERROR / LOADING ============== */
+        .loading-state, .empty-state, .error-state {
+            text-align: center;
+            padding: 60px 30px;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--gray-100);
+            border-top: 4px solid var(--navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 18px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-500);
+        }
+
+        .alert-box {
+            border-radius: 16px;
+            padding: 22px 26px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .alert-box.error {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 1.5px solid #fecaca;
+        }
+
+        .alert-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .alert-icon.error {
+            color: var(--danger);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+        }
+
+        .alert-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #991b1b;
+            margin-bottom: 4px;
+        }
+
+        .alert-text {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .detail-dates {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 6px 18px;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .detail-dates .label {
+            color: var(--gray-500);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-size: 10px;
+        }
+
+        .detail-dates .value {
+            color: var(--gray-800);
+            font-weight: 700;
+        }
+
+        .dates-right { text-align: right; }
+        .dates-right .detail-dates { grid-template-columns: auto auto; justify-content: end; }
     </style>
 </head>
 
@@ -243,25 +1132,14 @@
                 <div class="row align-items-center">
                     <div class="col-xl-7">
                         <ul class="tg-header__top-info left-side list-wrap">
-                            <li>
-                                <i class="flaticon-location-1"></i>669 Oak Avenue Hickory Hills Illinois United States
-                            </li>
-                            <li>
-                                <i class="flaticon-envelope"></i><a href="mailto:hiltonsupport@gmail.com">hiltonsupport@gmail.com</a>
-                            </li>
+                            <li><i class="flaticon-location-1"></i>669 Oak Avenue Hickory Hills Illinois United States</li>
+                            <li><i class="flaticon-envelope"></i><a href="mailto:hiltonsupport@gmail.com">hiltonsupport@gmail.com</a></li>
                         </ul>
                     </div>
-                    <!-- <div class="col-xl-5">
-                        <div class="tg-header__top-right">
-                            <ul class="tg-header__top-menu list-wrap">
-                                <li><a href="contact.html">Help Center</a></li>
-                            </ul>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
-        
+
         <div id="sticky-header" class="tg-header__area">
             <div class="container-fluid p-0">
                 <div class="row gx-0">
@@ -297,20 +1175,18 @@
                             </div>
                         </div>
 
-                        <!-- Mobile Menu  -->
+                        <!-- Mobile Menu -->
                         <div class="tgmobile__menu">
                             <nav class="tgmobile__menu-box">
                                 <div class="close-btn"><i class="tg-flaticon-close"></i></div>
                                 <div class="nav-logo">
                                     <a href="index.htm"><img src="images/hiltonlogo.png" alt="Logo"></a>
                                 </div>
-                                <div class="tgmobile__menu-outer">
-                                </div>
+                                <div class="tgmobile__menu-outer"></div>
                             </nav>
                         </div>
                         <div class="tgmobile__menu-backdrop"></div>
                         <!-- End Mobile Menu -->
-
                     </div>
                 </div>
             </div>
@@ -344,120 +1220,338 @@
         <section class="py-80">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-xl-10 col-lg-12">
-                        
-                        <!-- Tracking Form -->
-                        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8" data-aos="fade-up">
-                            <form id="tracking-form" class="row g-4">
+                    <div class="col-xl-11 col-lg-12">
+
+                        <!-- TRACKING SEARCH FORM -->
+                        <div class="tracking-form-card p-6 p-md-8 mb-8" data-aos="fade-up">
+                            <div class="text-center mb-5">
+                                <div style="display:inline-flex; align-items:center; gap:10px; padding:8px 18px; background:linear-gradient(135deg, #f0f4ff, #fffbeb); border-radius:30px; font-size:12px; font-weight:700; color:var(--navy); letter-spacing:0.5px; text-transform:uppercase;">
+                                    <i class="fas fa-shipping-fast" style="color:var(--gold);"></i>
+                                    Real-time Shipment Tracking System
+                                </div>
+                            </div>
+                            <form id="tracking-form" class="row g-3 g-md-4 align-items-end">
                                 <div class="col-md-10">
-                                    <div class="form-group mb-0">
-                                        <label for="tracking-number" class="form-label fw-semibold text-secondary">Tracking Number</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white"><i class="fas fa-search text-primary"></i></span>
-                                            <input 
-                                                type="text" 
-                                                class="form-control form-control-lg" 
-                                                id="tracking-number" 
-                                                placeholder="Enter your tracking number (e.g., HC123456789)"
-                                                required
-                                            >
-                                        </div>
+                                    <label for="tracking-number" class="form-label fw-bold text-secondary-700 mb-2" style="font-size:13px; letter-spacing:0.3px;">
+                                        <i class="fas fa-barcode text-navy me-2"></i>Tracking Number
+                                    </label>
+                                    <div class="tracking-input-wrap">
+                                        <i class="fas fa-search search-icon"></i>
+                                        <input
+                                            type="text"
+                                            class="tracking-input"
+                                            id="tracking-number"
+                                            placeholder="Enter your tracking number (e.g. HC123456789)"
+                                            required
+                                        >
                                     </div>
                                 </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary btn-lg w-100" id="track-btn">
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn-track w-100" id="track-btn">
                                         <span id="btn-text">Track</span>
-                                        <span id="btn-spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span id="btn-spinner" class="spinner-border spinner-border-sm d-none" role="status" style="width:16px;height:16px;border-width:2px;"></span>
                                     </button>
                                 </div>
                             </form>
-                            <div id="tracking-error" class="alert alert-danger mt-4 d-none" role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-exclamation-circle text-danger fs-4 me-3"></i>
+                            <div id="tracking-error" class="d-none mt-5">
+                                <div class="alert-box error">
+                                    <div class="alert-icon error"><i class="fas fa-exclamation-circle"></i></div>
                                     <div>
-                                        <h4 class="alert-heading mb-1">Invalid Tracking Number</h4>
-                                        <p class="mb-0">The tracking number you entered is not valid. Please check and try again.</p>
+                                        <div class="alert-title">Invalid Tracking Number</div>
+                                        <div class="alert-text">The tracking number you entered was not found. Please double-check the tracking number and try again.</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Shipment Details -->
+                        <!-- LOADING STATE -->
+                        <div id="loading-state" class="d-none mb-8">
+                            <div class="pro-card">
+                                <div class="loading-state">
+                                    <div class="loading-spinner"></div>
+                                    <div class="loading-text">Locating your shipment...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SHIPMENT DETAILS -->
                         <div id="shipment-details" class="d-none">
-                            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8" data-aos="fade-up">
-                                <div class="d-flex align-items-center justify-content-between mb-6 pb-4 border-bottom">
-                                    <h3 class="h3 mb-0">Shipment Details</h3>
-                                    <span id="status-badge" class="badge bg-success fs-6 px-4 py-2 rounded-pill"></span>
-                                </div>
-                                
-                                <div class="row g-4">
-                                    <div class="col-md-3">
-                                        <div class="bg-light rounded-xl p-4">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-tag text-primary fs-4 me-2"></i>
-                                                <span class="text-secondary small fw-medium">Tracking Number</span>
-                                            </div>
-                                            <p id="detail-tracking" class="h4 fw-bold text-dark mb-0"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="bg-light rounded-xl p-4">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-user text-primary fs-4 me-2"></i>
-                                                <span class="text-secondary small fw-medium">Customer</span>
-                                            </div>
-                                            <p id="detail-customer" class="h4 fw-bold text-dark mb-0"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="bg-light rounded-xl p-4">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-truck text-primary fs-4 me-2"></i>
-                                                <span class="text-secondary small fw-medium">Service Type</span>
-                                            </div>
-                                            <p id="detail-service" class="h4 fw-bold text-dark mb-0"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="bg-light rounded-xl p-4">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-weight text-primary fs-4 me-2"></i>
-                                                <span class="text-secondary small fw-medium">Weight</span>
-                                            </div>
-                                            <p id="detail-weight" class="h4 fw-bold text-dark mb-0"></p>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="row mt-5">
-                                    <div class="col-md-6">
-                                        <div class="border-start border-primary ps-4">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-map-marker-alt text-primary fs-4 me-2"></i>
-                                                <span class="text-secondary small fw-medium">Origin</span>
+                            <!-- HEADER -->
+                            <div class="pro-card mb-7" data-aos="fade-up">
+                                <div class="detail-header">
+                                    <div>
+                                        <div class="detail-brand mb-3">
+                                            <div class="detail-logo">
+                                                <img src="images/hiltonlogo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='HC';">
                                             </div>
-                                            <p id="detail-origin" class="h5 fw-semibold text-dark mb-0"></p>
+                                            <div>
+                                                <div class="detail-brand-name">HILTON CARGO</div>
+                                                <div class="detail-brand-sub">Logistics Portal</div>
+                                            </div>
+                                        </div>
+                                        <div class="tracking-chip mb-2 mb-md-0">
+                                            <i class="fas fa-barcode"></i>
+                                            <span id="header-tracking">HC123456789</span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="border-start border-warning ps-4">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-flag-checkered text-warning fs-4 me-2"></i>
-                                                <span class="text-secondary small fw-medium">Destination</span>
+                                    <div class="dates-right">
+                                        <div id="header-status" class="status-badge-lg mb-3 status-in_transit">In Transit</div>
+                                        <div class="detail-dates">
+                                            <div class="label">Shipped:</div>
+                                            <div class="value" id="header-created">Sep 10, 2024</div>
+                                            <div class="label">Est. Delivery:</div>
+                                            <div class="value" id="header-est">Sep 14, 2024</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pro-card-body pt-0">
+                                    <!-- SHIPMENT INFO GRID -->
+                                    <div class="section-title mt-0">Shipment Overview</div>
+                                    <div class="info-grid mb-7">
+                                        <div class="info-item">
+                                            <div class="info-label">Service Type</div>
+                                            <div class="info-value" id="info-service">Express Air Freight</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Weight</div>
+                                            <div class="info-value" id="info-weight">2.5 kg</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Packages</div>
+                                            <div class="info-value" id="info-packages">1 Box</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Insurance</div>
+                                            <div class="info-value" id="info-insurance">Insured</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Shipping Cost</div>
+                                            <div class="info-value amount" id="info-cost">$145.00</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- PROGRESS STEPS -->
+                                    <div class="section-title">Shipment Progress</div>
+                                    <div class="mb-1">
+                                        <div class="steps-bar" id="steps-bar">
+                                            <div class="step completed">
+                                                <div class="step-circle"><i class="fas fa-check"></i></div>
+                                                <div class="step-label">Order Placed</div>
                                             </div>
-                                            <p id="detail-destination" class="h5 fw-semibold text-dark mb-0"></p>
+                                            <div class="step completed">
+                                                <div class="step-circle"><i class="fas fa-check"></i></div>
+                                                <div class="step-label">Picked Up</div>
+                                            </div>
+                                            <div class="step current">
+                                                <div class="step-circle"><i class="fas fa-truck"></i></div>
+                                                <div class="step-label">In Transit</div>
+                                            </div>
+                                            <div class="step">
+                                                <div class="step-circle">4</div>
+                                                <div class="step-label">Out for Delivery</div>
+                                            </div>
+                                            <div class="step">
+                                                <div class="step-circle">5</div>
+                                                <div class="step-label">Delivered</div>
+                                            </div>
+                                        </div>
+                                        <div class="location-wrap mb-3">
+                                            <div class="current-location-pill">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                Current Location: <span id="current-location">Chicago, IL Transit Hub</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Tracking Timeline -->
-                            <div class="bg-white rounded-2xl shadow-lg p-8" data-aos="fade-up" data-aos-delay="200">
-                                <h3 class="h3 mb-6">Tracking History</h3>
-                                <div id="timeline-container">
+                            <!-- SENDER / RECEIVER + MAP ROW -->
+                            <div class="row g-5 mb-7" data-aos="fade-up" data-aos-delay="100">
+                                <div class="col-lg-5">
+                                    <div class="pro-card h-100">
+                                        <div class="pro-card-body">
+                                            <!-- SENDER & RECEIVER -->
+                                            <div class="section-title">Shipment Parties</div>
+                                            <div class="parties-grid">
+                                                <div class="party-card">
+                                                    <div class="party-card-header">
+                                                        <div class="party-icon sender"><i class="fas fa-user"></i></div>
+                                                        <div>
+                                                            <div class="party-label">Sender</div>
+                                                            <div class="party-name" id="sender-name">John Smith</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="party-info-row">
+                                                        <i class="fas fa-phone"></i>
+                                                        <span class="info-text" id="sender-phone">+1 (555) 123-4567</span>
+                                                    </div>
+                                                    <div class="party-info-row">
+                                                        <i class="fas fa-envelope"></i>
+                                                        <span class="info-text" id="sender-email">john@example.com</span>
+                                                    </div>
+                                                    <div class="party-info-row">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                        <span class="info-text" id="sender-address">123 Main St, New York, NY 10001, USA</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="party-card receiver">
+                                                    <div class="party-card-header">
+                                                        <div class="party-icon receiver"><i class="fas fa-user-check"></i></div>
+                                                        <div>
+                                                            <div class="party-label">Receiver</div>
+                                                            <div class="party-name" id="receiver-name">Jane Doe</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="party-info-row">
+                                                        <i class="fas fa-phone"></i>
+                                                        <span class="info-text" id="receiver-phone">+1 (555) 987-6543</span>
+                                                    </div>
+                                                    <div class="party-info-row">
+                                                        <i class="fas fa-envelope"></i>
+                                                        <span class="info-text" id="receiver-email">jane@example.com</span>
+                                                    </div>
+                                                    <div class="party-info-row">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                        <span class="info-text" id="receiver-address">456 Oak Ave, Los Angeles, CA 90001, USA</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="section-title mt-7">Route Summary</div>
+                                            <div class="stats-chips-row" style="margin-bottom:0;">
+                                                <div class="stat-chip">
+                                                    <div class="stat-chip-icon navy"><i class="fas fa-route"></i></div>
+                                                    <div>
+                                                        <div class="stat-chip-value" id="route-distance">2,790 mi</div>
+                                                        <div class="stat-chip-label">Distance</div>
+                                                    </div>
+                                                </div>
+                                                <div class="stat-chip">
+                                                    <div class="stat-chip-icon blue"><i class="fas fa-clock"></i></div>
+                                                    <div>
+                                                        <div class="stat-chip-value" id="route-eta">3 days</div>
+                                                        <div class="stat-chip-label">Remaining</div>
+                                                    </div>
+                                                </div>
+                                                <div class="stat-chip">
+                                                    <div class="stat-chip-icon green"><i class="fas fa-percentage"></i></div>
+                                                    <div>
+                                                        <div class="stat-chip-value" id="route-percent">62%</div>
+                                                        <div class="stat-chip-label">Progress</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-7">
+                                    <!-- MAP -->
+                                    <div class="pro-card h-100">
+                                        <div class="pro-card-body pb-0">
+                                            <div class="section-title">Live Shipment Route Map</div>
+                                        </div>
+                                        <div class="map-container-wrap" style="border-radius:0; border-left:none; border-right:none; border-bottom:none;">
+                                            <div id="shipment-map"></div>
+                                            <div class="map-overlay-legend">
+                                                <div style="font-weight:800; color:var(--navy); margin-bottom:8px; font-size:11px; letter-spacing:0.5px; text-transform:uppercase;">Legend</div>
+                                                <div class="map-legend-item">
+                                                    <div class="map-legend-dot" style="background:var(--navy);"></div>
+                                                    <span>Origin</span>
+                                                </div>
+                                                <div class="map-legend-item">
+                                                    <div class="map-legend-dot" style="background:linear-gradient(135deg,var(--gold-light),var(--gold));"></div>
+                                                    <span>Current Position</span>
+                                                </div>
+                                                <div class="map-legend-item">
+                                                    <div class="map-legend-dot" style="background:#ef4444;"></div>
+                                                    <span>Destination</span>
+                                                </div>
+                                                <div class="map-legend-item">
+                                                    <div class="map-legend-line" style="background:linear-gradient(90deg,var(--navy),var(--gold));"></div>
+                                                    <span>Route</span>
+                                                </div>
+                                            </div>
+                                            <div class="map-distance-card">
+                                                <div class="map-distance-icon"><i class="fas fa-shipping-fast"></i></div>
+                                                <div class="map-distance-info">
+                                                    <div class="label">Shipment Traveled</div>
+                                                    <div class="value"><span id="map-traveled">1,730</span> mi of <span id="map-total">2,790</span> mi</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pro-card-body" style="padding-top:18px; padding-bottom:22px;">
+                                            <div class="row g-3 align-items-center text-center text-md-start">
+                                                <div class="col-md-5 col-6">
+                                                    <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                                                        <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--navy),var(--navy-light)); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900;">O</div>
+                                                        <div>
+                                                            <div style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--gray-400); letter-spacing:0.5px;">From</div>
+                                                            <div style="font-size:12.5px; font-weight:800; color:var(--gray-900);" id="route-origin">New York, NY</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 d-none d-md-flex justify-content-center align-items-center">
+                                                    <div style="flex:1; height:3px; background:linear-gradient(90deg,var(--navy),var(--gold),#ef4444); border-radius:2px; position:relative;">
+                                                        <div style="position:absolute; left:62%; top:50%; transform:translate(-50%,-50%); width:18px; height:18px; background:linear-gradient(135deg,var(--gold-light),var(--gold)); border-radius:50%; border:3px solid white; box-shadow:0 2px 8px rgba(0,0,0,0.2);"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5 col-6">
+                                                    <div class="d-flex align-items-center justify-content-center justify-content-md-end gap-2">
+                                                        <div>
+                                                            <div style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--gray-400); letter-spacing:0.5px; text-align:right;">To</div>
+                                                            <div style="font-size:12.5px; font-weight:800; color:var(--gray-900); text-align:right;" id="route-destination">Los Angeles, CA</div>
+                                                        </div>
+                                                        <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,#ef4444,#dc2626); color:white; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900;">D</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- TIMELINE -->
+                            <div class="pro-card mb-7" data-aos="fade-up" data-aos-delay="200">
+                                <div class="pro-card-body">
+                                    <div class="section-title">Tracking Timeline</div>
+                                    <div class="timeline-wrap">
+                                        <div class="timeline" id="timeline-container">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- NEED HELP CARD -->
+                            <div class="pro-card" data-aos="fade-up" data-aos-delay="300">
+                                <div class="pro-card-body" style="background:linear-gradient(135deg, #f0f4ff 0%, #fffbeb 100%);">
+                                    <div class="row g-4 align-items-center">
+                                        <div class="col-md-8">
+                                            <div style="font-size:18px; font-weight:800; color:var(--navy); margin-bottom:6px;">
+                                                <i class="fas fa-headset me-2" style="color:var(--gold);"></i>Need Help with Your Shipment?
+                                            </div>
+                                            <div style="font-size:13px; color:var(--gray-600); font-weight:500;">
+                                                Our customer support team is available 24/7 to assist you with any questions or concerns about your delivery.
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 d-flex justify-content-md-end gap-3 flex-wrap">
+                                            <a href="tel:1234567890" class="btn-track" style="padding:12px 22px; font-size:13px;">
+                                                <i class="fas fa-phone" style="color:var(--gold);"></i>Call Us
+                                            </a>
+                                            <a href="contact.html" style="background:white; color:var(--navy); border:2px solid var(--navy); border-radius:14px; padding:12px 22px; font-size:13px; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:all 0.25s ease;" onmouseover="this.style.background='var(--navy)'; this.style.color='white';" onmouseout="this.style.background='white'; this.style.color='var(--navy)';">
+                                                <i class="fas fa-envelope"></i>Contact
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+                        <!-- SHIPMENT DETAILS END -->
+
                     </div>
                 </div>
             </div>
@@ -549,110 +1643,505 @@
     <script src="home-assets/js/bootstrap.bundle.min.js"></script>
     <script src="home-assets/js/aos.js"></script>
     <script src="home-assets/js/main.js"></script>
-    
+
     <script>
-    const API_BASE = window.location.origin;   // No trailing /api here
+    const API_BASE = window.location.origin;
+    let currentMap = null;
+    let truckMarker = null;
+    let routePolyline = null;
+    let routeCoords = [];
+
+    const CITY_COORDS = {
+        'new york': [40.7128, -74.0060], 'ny': [40.7128, -74.0060], 'new york, ny': [40.7128, -74.0060],
+        'los angeles': [34.0522, -118.2437], 'la': [34.0522, -118.2437], 'los angeles, ca': [34.0522, -118.2437],
+        'chicago': [41.8781, -87.6298], 'chicago, il': [41.8781, -87.6298],
+        'houston': [29.7604, -95.3698], 'houston, tx': [29.7604, -95.3698],
+        'phoenix': [33.4484, -112.0740], 'phoenix, az': [33.4484, -112.0740],
+        'philadelphia': [39.9526, -75.1652], 'philadelphia, pa': [39.9526, -75.1652],
+        'san antonio': [29.4241, -98.4936], 'san antonio, tx': [29.4241, -98.4936],
+        'san diego': [32.7157, -117.1611], 'san diego, ca': [32.7157, -117.1611],
+        'dallas': [32.7767, -96.7970], 'dallas, tx': [32.7767, -96.7970],
+        'san jose': [37.3382, -121.8863], 'san jose, ca': [37.3382, -121.8863],
+        'austin': [30.2672, -97.7431], 'austin, tx': [30.2672, -97.7431],
+        'jacksonville': [30.3322, -81.6557], 'jacksonville, fl': [30.3322, -81.6557],
+        'fort worth': [32.7555, -97.3308], 'fort worth, tx': [32.7555, -97.3308],
+        'columbus': [39.9612, -82.9988], 'columbus, oh': [39.9612, -82.9988],
+        'indianapolis': [39.7684, -86.1581], 'indianapolis, in': [39.7684, -86.1581],
+        'san francisco': [37.7749, -122.4194], 'san francisco, ca': [37.7749, -122.4194],
+        'seattle': [47.6062, -122.3321], 'seattle, wa': [47.6062, -122.3321],
+        'denver': [39.7392, -104.9903], 'denver, co': [39.7392, -104.9903],
+        'washington': [38.9072, -77.0369], 'washington, dc': [38.9072, -77.0369], 'dc': [38.9072, -77.0369],
+        'boston': [42.3601, -71.0589], 'boston, ma': [42.3601, -71.0589],
+        'el paso': [31.7619, -106.4850], 'el paso, tx': [31.7619, -106.4850],
+        'nashville': [36.1627, -86.7816], 'nashville, tn': [36.1627, -86.7816],
+        'detroit': [42.3314, -83.0458], 'detroit, mi': [42.3314, -83.0458],
+        'oklahoma city': [35.4676, -97.5164], 'oklahoma city, ok': [35.4676, -97.5164],
+        'portland': [45.5152, -122.6784], 'portland, or': [45.5152, -122.6784],
+        'las vegas': [36.1699, -115.1398], 'las vegas, nv': [36.1699, -115.1398],
+        'memphis': [35.1495, -90.0490], 'memphis, tn': [35.1495, -90.0490],
+        'louisville': [38.2527, -85.7585], 'louisville, ky': [38.2527, -85.7585],
+        'baltimore': [39.2904, -76.6122], 'baltimore, md': [39.2904, -76.6122],
+        'milwaukee': [43.0389, -87.9065], 'milwaukee, wi': [43.0389, -87.9065],
+        'albuquerque': [35.0844, -106.6504], 'albuquerque, nm': [35.0844, -106.6504],
+        'tucson': [32.2226, -110.9747], 'tucson, az': [32.2226, -110.9747],
+        'fresno': [36.7372, -119.7871], 'fresno, ca': [36.7372, -119.7871],
+        'sacramento': [38.5757, -121.4788], 'sacramento, ca': [38.5757, -121.4788],
+        'kansas city': [39.0997, -94.5786], 'kansas city, mo': [39.0997, -94.5786],
+        'long beach': [33.7701, -118.1937], 'long beach, ca': [33.7701, -118.1937],
+        'mesa': [33.4152, -111.8315], 'mesa, az': [33.4152, -111.8315],
+        'atlanta': [33.7490, -84.3880], 'atlanta, ga': [33.7490, -84.3880],
+        'colorado springs': [38.8339, -104.8214], 'colorado springs, co': [38.8339, -104.8214],
+        'virginia beach': [36.8529, -75.9780], 'virginia beach, va': [36.8529, -75.9780],
+        'raleigh': [35.7796, -78.6382], 'raleigh, nc': [35.7796, -78.6382],
+        'omaha': [41.2565, -95.9345], 'omaha, ne': [41.2565, -95.9345],
+        'miami': [25.7617, -80.1918], 'miami, fl': [25.7617, -80.1918],
+        'oakland': [37.8044, -122.2712], 'oakland, ca': [37.8044, -122.2712],
+        'tulsa': [36.1539, -95.9928], 'tulsa, ok': [36.1539, -95.9928],
+        'minneapolis': [44.9778, -93.2650], 'minneapolis, mn': [44.9778, -93.2650],
+        'st. louis': [38.6270, -90.1994], 'st louis, mo': [38.6270, -90.1994],
+        'st louis': [38.6270, -90.1994],
+        'hickory hills': [41.7200, -87.8300], 'hickory hills, il': [41.7200, -87.8300],
+        'london': [51.5074, -0.1278], 'paris': [48.8566, 2.3522], 'tokyo': [35.6762, 139.6503],
+        'dubai': [25.2048, 55.2708], 'singapore': [1.3521, 103.8198], 'hong kong': [22.3193, 114.1694],
+        'sydney': [-33.8688, 151.2093], 'toronto': [43.6532, -79.3832], 'vancouver': [49.2827, -123.1207],
+        'mumbai': [19.0760, 72.8777], 'delhi': [28.6139, 77.2090], 'beijing': [39.9042, 116.4074],
+        'shanghai': [31.2304, 121.4737], 'seoul': [37.5665, 126.9780], 'bangkok': [13.7563, 100.5018],
+    };
+
+    function guessCoords(cityStr) {
+        if (!cityStr) return null;
+        const key = String(cityStr).toLowerCase().trim();
+        if (CITY_COORDS[key]) return CITY_COORDS[key];
+        for (const k in CITY_COORDS) {
+            if (key.includes(k)) return CITY_COORDS[k];
+        }
+        return null;
+    }
+
+    function haversineDistance(a, b) {
+        const R = 3958.8;
+        const toRad = x => x * Math.PI / 180;
+        const dLat = toRad(b[0] - a[0]);
+        const dLon = toRad(b[1] - a[1]);
+        const lat1 = toRad(a[0]);
+        const lat2 = toRad(b[0]);
+        const h = Math.sin(dLat/2)**2 + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+        return 2 * R * Math.asin(Math.sqrt(h));
+    }
 
     function formatStatus(status) {
         return (status || 'Pending').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     }
 
-    function getStatusBadgeClass(status) {
-        const s = (status || '').toLowerCase();
-        if (s === 'delivered') return 'bg-success';
-        if (s.includes('transit')) return 'bg-primary';
-        if (s === 'pending') return 'bg-warning text-dark';
-        return 'bg-secondary';
-    }
-
     function formatDate(dateString) {
-        const date = dateString ? new Date(dateString) : new Date();
-        return date.toLocaleDateString('en-US', { 
-            year: 'numeric', month: 'short', day: 'numeric', 
-            hour: '2-digit', minute: '2-digit' 
-        });
+        try {
+            const date = dateString ? new Date(dateString) : new Date();
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        } catch(e) { return 'N/A'; }
     }
 
-    function renderTimeline(shipment) {
-        const updates = [
-            { status: 'Order Placed', location: shipment.origin || 'Origin', date: shipment.created_at, completed: true },
-            { status: 'Departed Origin', location: shipment.origin, date: shipment.created_at, completed: true },
-            { status: 'In Transit', location: 'Processing Center', date: new Date().toISOString(), completed: true },
-            { status: 'Arrived Destination', location: shipment.destination, date: new Date().toISOString(), completed: shipment.status === 'delivered' },
-            { status: 'Delivered', location: shipment.destination, date: shipment.updated_at, completed: shipment.status === 'delivered' }
+    function formatShortDate(dateString) {
+        try {
+            const date = dateString ? new Date(dateString) : new Date();
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch(e) { return 'N/A'; }
+    }
+
+    function statusClass(status) {
+        const s = (status || '').toLowerCase().replace(/ /g, '_');
+        if (s === 'delivered') return 'status-delivered';
+        if (s.includes('transit')) return 'status-in_transit';
+        if (s === 'pending') return 'status-pending';
+        if (s === 'cancelled') return 'status-cancelled';
+        if (s.includes('out_for')) return 'status-out_for_delivery';
+        return 'status-pending';
+    }
+
+    function getProgressIndex(status) {
+        const s = (status || 'pending').toLowerCase().replace(/ /g, '_');
+        if (s === 'delivered') return 4;
+        if (s.includes('out_for')) return 3;
+        if (s.includes('transit')) return 2;
+        if (s.includes('picked') || s === 'shipped') return 1;
+        return 0;
+    }
+
+    function getStepProgressPercent(stepIdx) {
+        return Math.min(100, Math.max(0, stepIdx * 25));
+    }
+
+    function buildTimeline(shipment) {
+        const origin = shipment.origin || 'Origin Facility';
+        const dest = shipment.destination || 'Destination';
+        const now = new Date();
+        const created = shipment.created_at ? new Date(shipment.created_at) : new Date(now.getTime() - 86400000 * 3);
+        const d = hours => new Date(created.getTime() + hours * 3600000).toISOString();
+
+        const s = (shipment.status || 'in_transit').toLowerCase().replace(/ /g, '_');
+
+        let events = [
+            { status: 'Order Placed & Confirmed', location: origin, date: d(0), desc: 'Shipment order has been received and confirmed by HILTON CARGO', cls: 'done' },
+            { status: 'Package Picked Up', location: origin, date: d(4), desc: 'Courier picked up the package from sender address', cls: 'done' },
+            { status: 'Departed Origin Hub', location: origin + ' Sorting Facility', date: d(10), desc: 'Package cleared origin processing and in transit', cls: 'done' },
         ];
 
-        let html = '';
-        updates.forEach(update => {
-            html += `
-                <div class="timeline-item">
-                    <div class="timeline-dot ${update.completed ? 'completed' : ''}"></div>
-                    <div class="timeline-content">
-                        <div class="fw-bold">${update.status}</div>
-                        <div class="text-secondary">${update.location}</div>
-                        <div class="text-muted small">${formatDate(update.date)}</div>
+        if (s !== 'pending') {
+            events.push({ status: 'In Transit - Processing Center', location: shipment.current_location || 'Chicago, IL Transit Hub', date: d(36), desc: 'Shipment processed at intermediate sorting facility', cls: 'done' });
+        }
+
+        const activeIdx = events.length - 1;
+        events[activeIdx].cls = s === 'delivered' ? 'done' : 'active';
+
+        if (s.includes('out_for') || s === 'delivered') {
+            events.push({ status: 'Arrived at Destination Facility', location: dest + ' Hub', date: d(72), desc: 'Package arrived at local destination center', cls: s === 'delivered' ? 'done' : 'done' });
+            events.push({ status: 'Out for Delivery', location: dest, date: d(80), desc: 'Package with driver for final delivery', cls: s === 'delivered' ? 'done' : 'active' });
+        }
+
+        if (s === 'delivered') {
+            events.push({ status: 'Delivered Successfully', location: dest, date: shipment.updated_at || d(90), desc: 'Package delivered and signed for by recipient. Thank you for using HILTON CARGO!', cls: 'done' });
+        }
+
+        const container = document.getElementById('timeline-container');
+        container.innerHTML = events.map(ev => `
+            <div class="timeline-item ${ev.cls}">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-top">
+                        <div class="timeline-status">${ev.status}</div>
+                        <div class="timeline-time"><i class="far fa-clock me-1"></i>${formatDate(ev.date)}</div>
+                    </div>
+                    <div class="timeline-desc">
+                        <i class="fas fa-map-marker-alt"></i> ${ev.location} — ${ev.desc}
                     </div>
                 </div>
-            `;
+            </div>
+        `).join('');
+    }
+
+    function renderSteps(status) {
+        const idx = getProgressIndex(status);
+        const bar = document.getElementById('steps-bar');
+        const after = bar.querySelector('::after') || null;
+        bar.style.setProperty('--progress', getStepProgressPercent(idx) + '%');
+        const steps = bar.querySelectorAll('.step');
+        steps.forEach((step, i) => {
+            step.classList.remove('completed', 'current');
+            if (i < idx) step.classList.add('completed');
+            else if (i === idx) {
+                step.classList.add('current');
+                const circle = step.querySelector('.step-circle');
+                if (!circle.innerHTML.includes('fa-')) {
+                    const icons = ['fa-clipboard-check', 'fa-box', 'fa-truck', 'fa-truck-loading', 'fa-check'];
+                    circle.innerHTML = `<i class="fas ${icons[i]}"></i>`;
+                }
+            }
         });
-        document.getElementById('timeline-container').innerHTML = html;
+        const pct = getStepProgressPercent(idx);
+        const afterStyle = document.createElement('style');
+        afterStyle.textContent = `.steps-bar::after { width: ${pct}% !important; }`;
+        const old = document.getElementById('progress-bar-style');
+        if (old) old.remove();
+        afterStyle.id = 'progress-bar-style';
+        document.head.appendChild(afterStyle);
+    }
+
+    /* ================ MAP ================ */
+    function destroyMap() {
+        if (currentMap) {
+            currentMap.remove();
+            currentMap = null;
+        }
+        truckMarker = null;
+        routePolyline = null;
+        routeCoords = [];
+    }
+
+    function buildOriginPin(label) {
+        return L.divIcon({
+            className: 'navy-pin',
+            html: `<div class="pin-wrap">
+                <div class="pin-circle navy">O</div>
+                <div class="pin-label">${label || 'Origin'}</div>
+            </div>`,
+            iconSize: [36, 70],
+            iconAnchor: [0, 0]
+        });
+    }
+
+    function buildDestPin(label) {
+        return L.divIcon({
+            className: 'red-pin',
+            html: `<div class="pin-wrap">
+                <div class="pin-circle red">D</div>
+                <div class="pin-label">${label || 'Destination'}</div>
+            </div>`,
+            iconSize: [36, 70],
+            iconAnchor: [0, 0]
+        });
+    }
+
+    function buildTruckPin() {
+        return L.divIcon({
+            className: 'truck-pin',
+            html: `<div class="pin-wrap">
+                <div class="pin-circle truck"><i class="fas fa-shipping-fast"></i></div>
+                <div class="pin-label" style="background:linear-gradient(135deg,#fffbeb,#fef3c7); border-color:rgba(251,191,36,0.3);">Your Shipment</div>
+            </div>`,
+            iconSize: [36, 70],
+            iconAnchor: [0, 0]
+        });
+    }
+
+    function curvedRoutePoints(a, b, segments = 80) {
+        const midLat = (a[0] + b[0]) / 2;
+        const midLng = (a[1] + b[1]) / 2;
+        const dx = b[1] - a[1];
+        const offset = Math.abs(dx) * 0.12 + 2;
+        const curveLat = midLat + offset;
+        const pts = [];
+        for (let i = 0; i <= segments; i++) {
+            const t = i / segments;
+            const lat = (1-t)*(1-t)*a[0] + 2*(1-t)*t*curveLat + t*t*b[0];
+            const lng = (1-t)*(1-t)*a[1] + 2*(1-t)*t*midLng + t*t*b[1];
+            pts.push([lat, lng]);
+        }
+        return pts;
+    }
+
+    function renderMap(shipment) {
+        destroyMap();
+        const container = document.getElementById('shipment-map');
+        if (!container) return;
+
+        const originStr = shipment.origin || 'New York, NY';
+        const destStr = shipment.destination || 'Los Angeles, CA';
+        let originCoords = guessCoords(originStr) || [40.7128, -74.0060];
+        let destCoords = guessCoords(destStr) || [34.0522, -118.2437];
+
+        const sw = [Math.min(originCoords[0], destCoords[0]) - 4, Math.min(originCoords[1], destCoords[1]) - 4];
+        const ne = [Math.max(originCoords[0], destCoords[0]) + 4, Math.max(originCoords[1], destCoords[1]) + 4];
+
+        currentMap = L.map('shipment-map', {
+            zoomControl: true,
+            scrollWheelZoom: false,
+            attributionControl: false
+        }).fitBounds([sw, ne], { padding: [60, 60] });
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(currentMap);
+
+        routeCoords = curvedRoutePoints(originCoords, destCoords, 100);
+
+        routePolyline = L.polyline(routeCoords, {
+            color: '#e2e8f0',
+            weight: 6,
+            lineCap: 'round',
+            lineJoin: 'round'
+        }).addTo(currentMap);
+
+        L.polyline(routeCoords, {
+            color: '#001B90',
+            weight: 3,
+            lineCap: 'round',
+            lineJoin: 'round',
+            dashArray: '8, 6',
+            className: 'animated-route'
+        }).addTo(currentMap);
+
+        const dashStyle = document.createElement('style');
+        dashStyle.textContent = `
+            .animated-route {
+                stroke-dasharray: 12, 6;
+                animation: dash 25s linear infinite;
+            }
+            @keyframes dash { to { stroke-dashoffset: -1000; } }
+        `;
+        const old = document.getElementById('dash-style');
+        if (old) old.remove();
+        dashStyle.id = 'dash-style';
+        document.head.appendChild(dashStyle);
+
+        const originLabel = originStr.split(',')[0].trim();
+        const destLabel = destStr.split(',')[0].trim();
+
+        L.marker(originCoords, { icon: buildOriginPin(originLabel) }).addTo(currentMap);
+        L.marker(destCoords, { icon: buildDestPin(destLabel) }).addTo(currentMap);
+
+        const s = (shipment.status || 'in_transit').toLowerCase().replace(/ /g, '_');
+        let progressT = 0.1;
+        if (s === 'delivered') progressT = 0.98;
+        else if (s.includes('out_for')) progressT = 0.85;
+        else if (s.includes('transit')) progressT = 0.55;
+        else if (s.includes('picked')) progressT = 0.2;
+        else progressT = 0.05;
+
+        const totalMi = haversineDistance(originCoords, destCoords);
+        const traveledMi = Math.round(totalMi * progressT);
+        document.getElementById('map-traveled').textContent = traveledMi.toLocaleString();
+        document.getElementById('map-total').textContent = Math.round(totalMi).toLocaleString();
+        document.getElementById('route-distance').textContent = Math.round(totalMi).toLocaleString() + ' mi';
+        document.getElementById('route-eta').textContent = s === 'delivered' ? 'Delivered' : Math.max(1, Math.round((1 - progressT) * 5)) + ' days';
+        document.getElementById('route-percent').textContent = Math.round(progressT * 100) + '%';
+
+        document.getElementById('route-origin').textContent = originLabel;
+        document.getElementById('route-destination').textContent = destLabel;
+
+        const truckIdx = Math.min(routeCoords.length - 1, Math.floor(progressT * routeCoords.length));
+        const truckPos = routeCoords[truckIdx];
+        truckMarker = L.marker(truckPos, { icon: buildTruckPin() }).addTo(currentMap);
+
+        let truckStep = truckIdx;
+        const direction = progressT < 0.98 ? 1 : 0;
+        if (direction) {
+            setInterval(() => {
+                if (!currentMap || !truckMarker) return;
+                truckStep = Math.min(routeCoords.length - 2, truckStep + 1);
+                if (truckStep >= routeCoords.length - 2) truckStep = truckIdx;
+                truckMarker.setLatLng(routeCoords[truckStep]);
+            }, 1800);
+        }
     }
 
     function displayShipment(shipment) {
         document.getElementById('shipment-details').classList.remove('d-none');
-        
-        document.getElementById('detail-tracking').textContent = shipment.tracking_number || 'N/A';
-        document.getElementById('detail-customer').textContent = shipment.customer_name || 'N/A';
-        document.getElementById('detail-service').textContent = shipment.service_type || 'N/A';
-        document.getElementById('detail-weight').textContent = (shipment.weight || 'N/A') + ' kg';
-        document.getElementById('detail-origin').textContent = shipment.origin || 'N/A';
-        document.getElementById('detail-destination').textContent = shipment.destination || 'N/A';
+        document.getElementById('loading-state').classList.add('d-none');
+        document.getElementById('tracking-error').classList.add('d-none');
 
-        const badge = document.getElementById('status-badge');
-        badge.textContent = formatStatus(shipment.status);
-        badge.className = `badge fs-6 px-4 py-2 rounded-pill ${getStatusBadgeClass(shipment.status)}`;
-        
-        renderTimeline(shipment);
+        document.getElementById('header-tracking').textContent = shipment.tracking_number || 'N/A';
+        document.getElementById('header-created').textContent = formatShortDate(shipment.created_at);
+        const est = shipment.estimated_delivery
+            ? formatShortDate(shipment.estimated_delivery)
+            : (shipment.created_at
+                ? formatShortDate(new Date(new Date(shipment.created_at).getTime() + 4 * 86400000).toISOString())
+                : 'N/A');
+        document.getElementById('header-est').textContent = est;
+
+        const statusBadge = document.getElementById('header-status');
+        statusBadge.textContent = formatStatus(shipment.status);
+        statusBadge.className = 'status-badge-lg mb-3 ' + statusClass(shipment.status);
+
+        document.getElementById('info-service').textContent = shipment.service_type || 'Express Freight';
+        document.getElementById('info-weight').textContent = (shipment.weight || 'N/A') + ' kg';
+        document.getElementById('info-packages').textContent = (shipment.pieces || shipment.packages || '1') + (shipment.pieces || shipment.packages ? ' Box' + ((shipment.pieces || shipment.packages || 1) > 1 ? 'es' : '') : ' Box');
+        document.getElementById('info-insurance').textContent = shipment.insurance ? 'Insured' : 'Standard';
+        document.getElementById('info-cost').textContent = '$' + ((shipment.price || shipment.cost || 145).toFixed(2));
+
+        document.getElementById('sender-name').textContent = shipment.sender_name || shipment.customer_name || 'John Smith';
+        document.getElementById('sender-phone').textContent = shipment.sender_phone || '+1 (555) 123-4567';
+        document.getElementById('sender-email').textContent = shipment.sender_email || 'sender@example.com';
+        document.getElementById('sender-address').textContent = shipment.sender_address || shipment.origin || 'Origin Address';
+
+        document.getElementById('receiver-name').textContent = shipment.receiver_name || 'Jane Doe';
+        document.getElementById('receiver-phone').textContent = shipment.receiver_phone || '+1 (555) 987-6543';
+        document.getElementById('receiver-email').textContent = shipment.receiver_email || 'receiver@example.com';
+        document.getElementById('receiver-address').textContent = shipment.receiver_address || shipment.destination || 'Destination Address';
+
+        document.getElementById('current-location').textContent = shipment.current_location || shipment.origin || 'Origin Facility';
+
+        renderSteps(shipment.status);
+        buildTimeline(shipment);
+
+        setTimeout(() => {
+            try {
+                renderMap(shipment);
+            } catch(e) {
+                console.warn('Map render failed:', e);
+            }
+        }, 150);
+
+        setTimeout(() => {
+            document.getElementById('shipment-details').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 250);
     }
 
     async function trackShipment(trackingNumber) {
         const errorDiv = document.getElementById('tracking-error');
-        
+        const loadingDiv = document.getElementById('loading-state');
+        const detailsDiv = document.getElementById('shipment-details');
+        const btnText = document.getElementById('btn-text');
+        const btnSpinner = document.getElementById('btn-spinner');
+
+        detailsDiv.classList.add('d-none');
+        errorDiv.classList.add('d-none');
+        loadingDiv.classList.remove('d-none');
+        btnText.classList.add('d-none');
+        btnSpinner.classList.remove('d-none');
+
+        await new Promise(r => setTimeout(r, 700));
+
         try {
-            // Try the correct endpoint from your server.js
             const response = await fetch(`${API_BASE}/api/shipments/track/${encodeURIComponent(trackingNumber)}`);
-            
             if (response.ok) {
                 const data = await response.json();
+                btnText.classList.remove('d-none');
+                btnSpinner.classList.add('d-none');
                 displayShipment(data);
-                errorDiv.classList.add('d-none');
                 return;
             }
-        } catch (e) {
+        } catch(e) {
             console.log('Backend fetch failed, using demo data');
         }
 
-        // Fallback demo (should always work)
-        errorDiv.classList.add('d-none');
+        btnText.classList.remove('d-none');
+        btnSpinner.classList.add('d-none');
+
+        const originCities = ['New York, NY, USA', 'Chicago, IL, USA', 'Miami, FL, USA', 'Boston, MA, USA', 'Seattle, WA, USA', 'Atlanta, GA, USA', 'Dallas, TX, USA', 'Denver, CO, USA'];
+        const destCities = ['Los Angeles, CA, USA', 'San Francisco, CA, USA', 'Houston, TX, USA', 'Phoenix, AZ, USA', 'San Diego, CA, USA', 'Portland, OR, USA', 'Las Vegas, NV, USA', 'Austin, TX, USA'];
+        const services = ['Express Air Freight', 'Standard Ground', 'Priority Overnight', 'International Express', 'Economy Freight', 'Next Day Air'];
+        const statuses = ['in_transit', 'in_transit', 'pending', 'out_for_delivery', 'delivered', 'in_transit'];
+        const weights = [1.5, 2.3, 4.8, 7.2, 0.8, 12.5, 3.6];
+        const prices = [89, 145, 220, 310, 65, 480, 175];
+        const pieces = [1, 1, 2, 3, 1, 5, 2];
+
+        const h = Array.from(trackingNumber).reduce((a,c)=>a + c.charCodeAt(0), 0);
+        const origin = originCities[h % originCities.length];
+        let dest = destCities[h % destCities.length];
+        if (dest === origin) dest = destCities[(h + 1) % destCities.length];
+        const status = statuses[h % statuses.length];
+        const service = services[h % services.length];
+        const weight = weights[h % weights.length];
+        const price = prices[h % prices.length];
+        const pcs = pieces[h % pieces.length];
+        const created = new Date(Date.now() - 86400000 * (2 + (h % 3)));
+
+        const transitHubs = ['Chicago, IL Transit Hub', 'Dallas/Fort Worth Hub', 'Denver CO Processing Center', 'St. Louis MO Sorting', 'Memphis TN Super Hub'];
+        const current = status === 'delivered' ? dest : transitHubs[h % transitHubs.length];
+
         displayShipment({
-            tracking_number: trackingNumber,
-            customer_name: "John Doe",
-            origin: "New York, NY, USA",
-            destination: "Los Angeles, CA, USA",
-            service_type: "Express Air Freight",
-            status: "in_transit",
-            weight: 2.5,
-            created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
-            updated_at: new Date().toISOString()
+            tracking_number: trackingNumber.toUpperCase(),
+            customer_name: 'Customer ' + trackingNumber.slice(-3).toUpperCase(),
+            sender_name: 'Michael Johnson',
+            sender_phone: '+1 (555) ' + String(1000000 + (h % 9000000)).slice(0,7),
+            sender_email: 'michael.j' + (h%99) + '@mail.com',
+            sender_address: '789 Sender Blvd, ' + origin,
+            receiver_name: 'Sarah Williams',
+            receiver_phone: '+1 (555) ' + String(9000000 - (h % 8000000)).slice(0,7),
+            receiver_email: 'sarah.w' + (h%77) + '@mail.com',
+            receiver_address: '321 Receiver Ln, ' + dest,
+            origin: origin,
+            destination: dest,
+            current_location: current,
+            service_type: service,
+            status: status,
+            weight: weight,
+            pieces: pcs,
+            price: price,
+            insurance: (h % 2) === 0,
+            created_at: created.toISOString(),
+            updated_at: new Date().toISOString(),
+            estimated_delivery: new Date(created.getTime() + (h % 3 + 3) * 86400000).toISOString()
         });
     }
 
-    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('tracking-form');
         const input = document.getElementById('tracking-number');
 
-        // Auto-load from URL
         const params = new URLSearchParams(window.location.search);
         const tracking = params.get('tracking');
         if (tracking) {
@@ -664,9 +2153,10 @@
             e.preventDefault();
             const tn = input.value.trim().toUpperCase();
             if (!tn) return;
+            destroyMap();
             await trackShipment(tn);
         });
     });
-</script>
+    </script>
 </body>
 </html>
