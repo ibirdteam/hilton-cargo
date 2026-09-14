@@ -232,21 +232,70 @@ const createInMemoryDb = () => ({
 
 let db;
 let firestoreDb = null;
+let firebaseInitError = null;
+let currentServiceAccountEmail = null;
+let currentProjectId = null;
 try {
   const serviceAccountPath = path.join(__dirname, 'firebase-service-account.json');
-  const serviceAccount = require(serviceAccountPath);
-  const explicitProjectId = (process.env.FIREBASE_PROJECT_ID || serviceAccount.project_id || '').trim();
+  if (!fs.existsSync(serviceAccountPath)) {
+    throw new Error('firebase-service-account.json not found at: ' + serviceAccountPath);
+  }
+  let serviceAccount;
+  try {
+    serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+  } catch (parseErr) {
+    throw new Error('firebase-service-account.json is not valid JSON: ' + parseErr.message);
+  }
+  if (!serviceAccount || !serviceAccount.private_key || !serviceAccount.project_id || !serviceAccount.client_email) {
+    throw new Error('firebase-service-account.json is missing required fields (private_key, project_id, client_email). Did you download the correct file?');
+  }
+  if (serviceAccount.private_key.includes('-----BEGIN PRIVATE KEY-----') === false) {
+    throw new Error('Private key in firebase-service-account.json is malformed. It must start with "-----BEGIN PRIVATE KEY-----".');
+  }
+
+  currentServiceAccountEmail = serviceAccount.client_email;
+  const explicitProjectId = (process.env.SERVER_FIREBASE_PROJECT_ID || serviceAccount.project_id || '').trim();
+  currentProjectId = explicitProjectId || serviceAccount.project_id || null;
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     ...(explicitProjectId ? { projectId: explicitProjectId } : {})
   });
   firestoreDb = admin.firestore();
-  if (explicitProjectId) {
-    firestoreDb.settings({ projectId: explicitProjectId });
+  try {
+    firestoreDb.settings({
+      ...(explicitProjectId ? { projectId: explicitProjectId } : {}),
+      ignoreUndefinedProperties: true
+    });
+  } catch (settingsErr) {
+    // Settings may already be applied; ignore.
   }
-  console.log('ℹ️  Firebase admin initialized (project=' + (explicitProjectId || '(auto)') + '). Will verify credentials before starting server.');
+  console.log('');
+  console.log('ℹ️  Firebase admin SDK initialized successfully.');
+  console.log('   Project ID     : ' + (explicitProjectId || '(auto)'));
+  console.log('   Service account: ' + serviceAccount.client_email);
+  console.log('   Verifying Firestore connection (up to 15s)...');
+  console.log('');
 } catch (error) {
-  console.log('⚠️  Firebase service account not found or invalid. Using in-memory data for demo.');
+  firebaseInitError = error;
+  console.log('');
+  console.log('─────────────────────────────────────────────────────────────');
+  console.log('⚠️  FIREBASE SERVICE ACCOUNT INIT FAILED');
+  console.log('─────────────────────────────────────────────────────────────');
+  console.log('   Reason: ' + (error.message || String(error)));
+  console.log('');
+  console.log('   TROUBLESHOOTING:');
+  console.log('   • If the file does not exist:');
+  console.log('     Go to Firebase Console → Project Settings → Service Accounts');
+  console.log('     → Click "Generate new private key" → Download JSON');
+  console.log('     → Save it as firebase-service-account.json in this folder');
+  console.log('');
+  console.log('   • If the JSON is invalid:');
+  console.log('     Re-download the key from Firebase Console (do NOT edit it by hand)');
+  console.log('     and completely replace firebase-service-account.json');
+  console.log('─────────────────────────────────────────────────────────────');
+  console.log('   Falling back to in-memory demo data.');
+  console.log('─────────────────────────────────────────────────────────────');
+  console.log('');
   db = createInMemoryDb();
 }
 
@@ -1484,18 +1533,107 @@ process.on('uncaughtException', (error) => {
   if (!db && firestoreDb) {
     try {
       await new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => reject(new Error('timeout')), 5000);
+        const timeout = setTimeout(() => reject(new Error('__timeout__')), 15000);
         firestoreDb.collection('services').limit(1).get()
           .then(() => { clearTimeout(timeout); resolve(); })
           .catch((err) => { clearTimeout(timeout); reject(err); });
       });
       db = firestoreDb;
-      console.log('✅ Firebase credentials verified. Using Firestore!');
+      console.log('✅ Firebase credentials verified! Connected to Firestore successfully.');
+      console.log('');
     } catch (verificationError) {
-      const reason = verificationError && verificationError.message === 'timeout'
-        ? 'verification timed out'
-        : ((verificationError && (verificationError.code || verificationError.message)) || 'unknown error');
-      console.log('⚠️  Firebase credentials invalid (' + reason + '). Falling back to in-memory data for demo.');
+      let reasonLabel, troubleshooting;
+      const isTimeout = verificationError && verificationError.message === '__timeout__';
+      const errCode = verificationError && !isTimeout ? (verificationError.code || '') : '';
+      const errMsg = verificationError && !isTimeout ? (verificationError.message || '') : '';
+
+      if (isTimeout) {
+        reasonLabel = 'Connection timed out (15s)';
+        troubleshooting = [
+          '• Internet connection is unstable or offline',
+          '• Firewall / proxy is blocking connections to Google APIs (port 443)',
+          '• Firebase servers are temporarily unavailable (check status.firebase.google.com)',
+          '• The Firestore database region is very far from this server (try using a closer region)'
+        ];
+      } else if (errCode === 7 || /permission/i.test(errMsg)) {
+        reasonLabel = 'PERMISSION_DENIED (IAM role missing)';
+        const projectForIam = currentProjectId || 'YOUR_PROJECT_ID';
+        const saForIam = currentServiceAccountEmail || 'YOUR_SERVICE_ACCOUNT_EMAIL';
+        troubleshooting = [
+          'Your service account lacks Firestore permissions. Go to Google Cloud Console:',
+          '  https://console.cloud.google.com/iam-admin/iam?project=' + projectForIam,
+          '  → Find the service account: ' + saForIam,
+          '  → Click "Edit" (pencil) → "Add another role" → grant one of these:',
+          '    - Firebase Admin SDK Administrator Service Agent (recommended)',
+          '    - Cloud Datastore User',
+          '    - Firebase Firestore Service Agent',
+          '    - Owner (for testing only, not recommended for production)'
+        ];
+      } else if (errCode === 5 || /not.?found/i.test(errMsg)) {
+        reasonLabel = 'NOT_FOUND (Firestore database not created)';
+        const projectForFirestore = currentProjectId || 'YOUR_PROJECT_ID';
+        troubleshooting = [
+          'You must create the Firestore database first! Go to Firebase Console:',
+          '  https://console.firebase.google.com/project/' + projectForFirestore + '/firestore',
+          '  → Click "Create database"',
+          '  → Choose "Start in production mode" (or test mode for development)',
+          '  → Choose a location (e.g., nam5, us-central, europe-west, asia-east)',
+          '  → Click "Enable"',
+          '  Then wait 2-3 minutes and restart this server.'
+        ];
+      } else if (errCode === 16 || /unauthenticated/i.test(errMsg) || /invalid.*credential/i.test(errMsg)) {
+        reasonLabel = 'UNAUTHENTICATED (Credentials invalid/revoked)';
+        const projectForSa = currentProjectId || 'YOUR_PROJECT_ID';
+        troubleshooting = [
+          'The private key in firebase-service-account.json has been REVOKED, DELETED, or was NEVER ACTIVATED.',
+          'You MUST generate a NEW key from Firebase Console:',
+          '  1. Go to: https://console.firebase.google.com/project/' + projectForSa + '/settings/serviceaccounts/adminsdk',
+          '  2. Make sure "Node.js" is selected at the top',
+          '  3. Click the BIG BLUE BUTTON: "Generate new private key"',
+          '  4. A warning pop-up appears → click "Generate key"',
+          '  5. A JSON file will be downloaded to your computer',
+          '  6. RENAME the downloaded file to: firebase-service-account.json',
+          '  7. COPY and REPLACE it into this folder, overwriting the existing old one',
+          '  8. Restart this server (Ctrl+C, then: node server.js)',
+          '',
+          '   ⚠️  IMPORTANT: Do NOT edit the downloaded JSON file by hand.',
+          '   Each line, every character matters (including the "-----BEGIN PRIVATE KEY-----" block).',
+          '   Just download → rename → copy → paste → overwrite.'
+        ];
+      } else if (errCode === 14 || /unavailable/i.test(errMsg)) {
+        reasonLabel = 'UNAVAILABLE (Service or network issue)';
+        troubleshooting = [
+          '• Check your internet connection (can you open google.com?)',
+          '• Firebase service outage: check https://status.firebase.google.com',
+          '• Project ID mismatch: compare project_id in firebase-service-account.json',
+          '  with the project ID in Firebase Console.'
+        ];
+      } else {
+        reasonLabel = (verificationError && (verificationError.code || verificationError.message)) || 'Unknown error';
+        troubleshooting = [
+          'Please share the full error output above with support, or:',
+          '• Regenerate a new service account key as described in the UNAUTHENTICATED case above',
+          '• Make sure you are replacing the ENTIRE firebase-service-account.json file (not editing it)',
+          '• Check that Firestore is created in Firebase Console → Firestore Database'
+        ];
+      }
+
+      console.log('');
+      console.log('─────────────────────────────────────────────────────────────────────');
+      console.log('⚠️  FIREBASE CONNECTION FAILED');
+      console.log('─────────────────────────────────────────────────────────────────────');
+      console.log('   Reason: ' + reasonLabel);
+      if (!isTimeout && errMsg && !reasonLabel.includes(errMsg)) {
+        console.log('   Details: ' + errMsg);
+      }
+      console.log('');
+      console.log('   🔧 TROUBLESHOOTING:');
+      troubleshooting.forEach(line => console.log('   ' + line));
+      console.log('');
+      console.log('   Until fixed: Server will use IN-MEMORY demo data.');
+      console.log('   (Shipments you create now will be LOST when the server restarts.)');
+      console.log('─────────────────────────────────────────────────────────────────────');
+      console.log('');
       db = createInMemoryDb();
     }
   }
@@ -1517,15 +1655,29 @@ process.on('uncaughtException', (error) => {
 
   const startServer = (port, attempt = 0) => {
     const server = app.listen(port, () => {
-      console.log(`🚀 HILTON CARGO Server is running!`);
-      console.log(`Server is running at http://localhost:${port}`);
-      console.log(`Admin panel at http://localhost:${port}/admin/index.html`);
-      console.log(`Shipments page at http://localhost:${port}/admin/shipments.html`);
+      console.log('');
+      console.log('╔══════════════════════════════════════════════════════════════════╗');
+      console.log('║          🚀  HILTON CARGO SERVER STARTED SUCCESSFULLY              ║');
+      console.log('╚══════════════════════════════════════════════════════════════════╝');
+      console.log('');
+      console.log('   🌐 Website              : http://localhost:' + port);
+      console.log('   📊 Admin Dashboard   : http://localhost:' + port + '/admin/index.html');
+      console.log('   📦 Shipments   : http://localhost:' + port + '/admin/shipments.html');
+      console.log('');
       if (db._data) {
-        console.log(`⚠️  Using in-memory demo data. Fix or remove firebase-service-account.json to change mode.`);
+        console.log('   🗄️  DATABASE MODE  : IN-MEMORY (DEMO ONLY — DATA NOT PERSISTED');
+        console.log('');
+        console.log('   ⚠️  WARNING: Shipments/customers you create/edit will be LOST when');
+        console.log('      the server restarts! To fix this, see instructions above,');
+        console.log('      or read the TROUBLESHOOTING steps that were printed.');
+        console.log('      You need: a valid service account + Firestore database.');
       } else {
-        console.log(`✅ Connected to Firebase Firestore!`);
+        console.log('   🗄️  DATABASE MODE  : FIREBASE FIRESTORE (PERSISTENT)');
+        console.log('   ✅ All data is saved to the cloud and will survive restarts.');
       }
+      console.log('');
+      console.log('───────────────────────────────────────────────────────────────────');
+      console.log('');
     });
 
     server.on('error', (error) => {

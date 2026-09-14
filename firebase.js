@@ -9,13 +9,13 @@ import { getAuth } from "firebase/auth"
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyADDIYDtnFB5VvJSxicCCVYrnbLVHisfWw",
-  authDomain: "hiltoncargo-e57cc.firebaseapp.com",
-  projectId: "hiltoncargo-e57cc",
-  storageBucket: "hiltoncargo-e57cc.firebasestorage.app",
-  messagingSenderId: "690051376622",
-  appId: "1:690051376622:web:0c4ca8fe3b63a651e05aff",
-  measurementId: "G-K1JY9PTSV4"
+  apiKey: "AIzaSyAlLjpPmv-pMEG5-daEKDw4D73eNkNlAIY",
+  authDomain: "hiltons-cargos.firebaseapp.com",
+  projectId: "hiltons-cargos",
+  storageBucket: "hiltons-cargos.firebasestorage.app",
+  messagingSenderId: "256453824216",
+  appId: "1:256453824216:web:4af2e20b4b01ed355a11ad",
+  measurementId: "G-8PTDYNW141"
 };
 
 // Initialize Firebase
