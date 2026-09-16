@@ -661,16 +661,13 @@
                             const response = await fetch(`${API_BASE}/track/${encodeURIComponent(trackingNumber)}`);
                             
                             if (response.ok) {
-                                // Valid tracking number, redirect to track page
                                 window.location.href = 'shipmenttrack.html?tracking=' + encodeURIComponent(trackingNumber);
                             } else {
-                                // Invalid tracking number, show error
                                 homeTrackingError.classList.remove('hidden');
                             }
                         } catch (error) {
                             console.error('Error checking tracking number:', error);
-                            // Fallback: still redirect so user can see demo
-                            window.location.href = 'shipmenttrack.html?tracking=' + encodeURIComponent(trackingNumber);
+                            homeTrackingError.classList.remove('hidden');
                         } finally {
                             // Reset button
                             homeBtnText.textContent = 'Track Package';

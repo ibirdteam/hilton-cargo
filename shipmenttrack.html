@@ -1777,7 +1777,8 @@
         const origin = shipment.origin || 'Origin Facility';
         const dest = shipment.destination || 'Destination';
         const now = new Date();
-        const created = shipment.created_at ? new Date(shipment.created_at) : new Date(now.getTime() - 86400000 * 3);
+        const sent = shipment.date_sent || shipment.created_at;
+        const created = sent ? new Date(sent) : new Date(now.getTime() - 86400000 * 3);
         const d = hours => new Date(created.getTime() + hours * 3600000).toISOString();
 
         const s = (shipment.status || 'in_transit').toLowerCase().replace(/ /g, '_');
@@ -2013,11 +2014,11 @@
         document.getElementById('tracking-error').classList.add('d-none');
 
         document.getElementById('header-tracking').textContent = shipment.tracking_number || 'N/A';
-        document.getElementById('header-created').textContent = formatShortDate(shipment.created_at);
-        const est = shipment.estimated_delivery
-            ? formatShortDate(shipment.estimated_delivery)
-            : (shipment.created_at
-                ? formatShortDate(new Date(new Date(shipment.created_at).getTime() + 4 * 86400000).toISOString())
+        document.getElementById('header-created').textContent = formatShortDate(shipment.date_sent || shipment.created_at);
+        const est = shipment.date_expected
+            ? formatShortDate(shipment.date_expected)
+            : (shipment.date_sent
+                ? formatShortDate(new Date(new Date(shipment.date_sent).getTime() + 4 * 86400000).toISOString())
                 : 'N/A');
         document.getElementById('header-est').textContent = est;
 
@@ -2025,21 +2026,22 @@
         statusBadge.textContent = formatStatus(shipment.status);
         statusBadge.className = 'status-badge-lg mb-3 ' + statusClass(shipment.status);
 
-        document.getElementById('info-service').textContent = shipment.service_type || 'Express Freight';
-        document.getElementById('info-weight').textContent = (shipment.weight || 'N/A') + ' kg';
-        document.getElementById('info-packages').textContent = (shipment.pieces || shipment.packages || '1') + (shipment.pieces || shipment.packages ? ' Box' + ((shipment.pieces || shipment.packages || 1) > 1 ? 'es' : '') : ' Box');
-        document.getElementById('info-insurance').textContent = shipment.insurance ? 'Insured' : 'Standard';
-        document.getElementById('info-cost').textContent = '$' + ((shipment.price || shipment.cost || 145).toFixed(2));
+        document.getElementById('info-service').textContent = shipment.service_type || 'Standard Freight';
+        document.getElementById('info-weight').textContent = (shipment.package_weight || shipment.weight || '0') + ' kg';
+        document.getElementById('info-packages').textContent = '1 Box';
+        document.getElementById('info-insurance').textContent = 'Standard';
+        const costAmount = shipment.total_amount !== undefined ? Number(shipment.total_amount).toFixed(2) : '0.00';
+        document.getElementById('info-cost').textContent = '$' + costAmount;
 
-        document.getElementById('sender-name').textContent = shipment.sender_name || shipment.customer_name || 'John Smith';
-        document.getElementById('sender-phone').textContent = shipment.sender_phone || '+1 (555) 123-4567';
-        document.getElementById('sender-email').textContent = shipment.sender_email || 'sender@example.com';
-        document.getElementById('sender-address').textContent = shipment.sender_address || shipment.origin || 'Origin Address';
+        document.getElementById('sender-name').textContent = shipment.sender_name || shipment.customer_name || 'N/A';
+        document.getElementById('sender-phone').textContent = shipment.sender_phone || 'N/A';
+        document.getElementById('sender-email').textContent = shipment.sender_email || 'N/A';
+        document.getElementById('sender-address').textContent = shipment.sender_address || shipment.origin || 'N/A';
 
-        document.getElementById('receiver-name').textContent = shipment.receiver_name || 'Jane Doe';
-        document.getElementById('receiver-phone').textContent = shipment.receiver_phone || '+1 (555) 987-6543';
-        document.getElementById('receiver-email').textContent = shipment.receiver_email || 'receiver@example.com';
-        document.getElementById('receiver-address').textContent = shipment.receiver_address || shipment.destination || 'Destination Address';
+        document.getElementById('receiver-name').textContent = shipment.receiver_name || 'N/A';
+        document.getElementById('receiver-phone').textContent = shipment.receiver_phone || 'N/A';
+        document.getElementById('receiver-email').textContent = shipment.receiver_email || 'N/A';
+        document.getElementById('receiver-address').textContent = shipment.receiver_address || shipment.destination || 'N/A';
 
         document.getElementById('current-location').textContent = shipment.current_location || shipment.origin || 'Origin Facility';
 
@@ -2084,58 +2086,13 @@
                 return;
             }
         } catch(e) {
-            console.log('Backend fetch failed, using demo data');
+            console.error('Backend fetch failed:', e);
         }
 
         btnText.classList.remove('d-none');
         btnSpinner.classList.add('d-none');
-
-        const originCities = ['New York, NY, USA', 'Chicago, IL, USA', 'Miami, FL, USA', 'Boston, MA, USA', 'Seattle, WA, USA', 'Atlanta, GA, USA', 'Dallas, TX, USA', 'Denver, CO, USA'];
-        const destCities = ['Los Angeles, CA, USA', 'San Francisco, CA, USA', 'Houston, TX, USA', 'Phoenix, AZ, USA', 'San Diego, CA, USA', 'Portland, OR, USA', 'Las Vegas, NV, USA', 'Austin, TX, USA'];
-        const services = ['Express Air Freight', 'Standard Ground', 'Priority Overnight', 'International Express', 'Economy Freight', 'Next Day Air'];
-        const statuses = ['in_transit', 'in_transit', 'pending', 'out_for_delivery', 'delivered', 'in_transit'];
-        const weights = [1.5, 2.3, 4.8, 7.2, 0.8, 12.5, 3.6];
-        const prices = [89, 145, 220, 310, 65, 480, 175];
-        const pieces = [1, 1, 2, 3, 1, 5, 2];
-
-        const h = Array.from(trackingNumber).reduce((a,c)=>a + c.charCodeAt(0), 0);
-        const origin = originCities[h % originCities.length];
-        let dest = destCities[h % destCities.length];
-        if (dest === origin) dest = destCities[(h + 1) % destCities.length];
-        const status = statuses[h % statuses.length];
-        const service = services[h % services.length];
-        const weight = weights[h % weights.length];
-        const price = prices[h % prices.length];
-        const pcs = pieces[h % pieces.length];
-        const created = new Date(Date.now() - 86400000 * (2 + (h % 3)));
-
-        const transitHubs = ['Chicago, IL Transit Hub', 'Dallas/Fort Worth Hub', 'Denver CO Processing Center', 'St. Louis MO Sorting', 'Memphis TN Super Hub'];
-        const current = status === 'delivered' ? dest : transitHubs[h % transitHubs.length];
-
-        displayShipment({
-            tracking_number: trackingNumber.toUpperCase(),
-            customer_name: 'Customer ' + trackingNumber.slice(-3).toUpperCase(),
-            sender_name: 'Michael Johnson',
-            sender_phone: '+1 (555) ' + String(1000000 + (h % 9000000)).slice(0,7),
-            sender_email: 'michael.j' + (h%99) + '@mail.com',
-            sender_address: '789 Sender Blvd, ' + origin,
-            receiver_name: 'Sarah Williams',
-            receiver_phone: '+1 (555) ' + String(9000000 - (h % 8000000)).slice(0,7),
-            receiver_email: 'sarah.w' + (h%77) + '@mail.com',
-            receiver_address: '321 Receiver Ln, ' + dest,
-            origin: origin,
-            destination: dest,
-            current_location: current,
-            service_type: service,
-            status: status,
-            weight: weight,
-            pieces: pcs,
-            price: price,
-            insurance: (h % 2) === 0,
-            created_at: created.toISOString(),
-            updated_at: new Date().toISOString(),
-            estimated_delivery: new Date(created.getTime() + (h % 3 + 3) * 86400000).toISOString()
-        });
+        loadingDiv.classList.add('d-none');
+        errorDiv.classList.remove('d-none');
     }
 
     document.addEventListener('DOMContentLoaded', () => {

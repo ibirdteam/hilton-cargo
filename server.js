@@ -362,6 +362,25 @@ const statusBadgeColor = (status) => {
   }
 };
 
+const convertFirestoreTimestamps = (obj) => {
+  if (!obj || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) return obj.map(convertFirestoreTimestamps);
+
+  const result = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value && typeof value === 'object' && typeof value.toDate === 'function') {
+      result[key] = value.toDate().toISOString();
+    } else if (value && typeof value === 'object' && value._seconds !== undefined && value._nanoseconds !== undefined) {
+      result[key] = new Date(value._seconds * 1000 + value._nanoseconds / 1000000).toISOString();
+    } else if (value && typeof value === 'object') {
+      result[key] = convertFirestoreTimestamps(value);
+    } else {
+      result[key] = value;
+    }
+  }
+  return result;
+};
+
 const renderReceiptHtml = (shipment) => {
   const s = shipment || {};
   const prog = Math.max(0, Math.min(100, Number(s.progress_pct) || 0));
@@ -727,7 +746,8 @@ function downloadInvoice() {
 // Shipment endpoints
 app.get('/api/shipments', async (req, res) => {
   try {
-    const shipments = await getDocuments('shipments');
+    const rawShipments = await getDocuments('shipments');
+    const shipments = convertFirestoreTimestamps(rawShipments);
     res.json(shipments);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -741,9 +761,12 @@ app.get('/api/shipments/:id', async (req, res) => {
       return res.status(404).json({ error: 'Shipment not found' });
     }
     
-    const shipment = { id: doc.id, ...doc.data() };
+    const rawShipment = { id: doc.id, ...doc.data() };
+    const shipment = convertFirestoreTimestamps(rawShipment);
+    
     const updatesSnapshot = await db.collection('tracking_updates').where('shipment_id', '==', req.params.id).get();
-    const updates = updatesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const rawUpdates = updatesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const updates = convertFirestoreTimestamps(rawUpdates);
     
     res.json({ ...shipment, updates });
   } catch (error) {
@@ -759,9 +782,12 @@ app.get('/api/shipments/track/:trackingNumber', async (req, res) => {
     }
     
     const doc = snapshot.docs[0];
-    const shipment = { id: doc.id, ...doc.data() };
+    const rawShipment = { id: doc.id, ...doc.data() };
+    const shipment = convertFirestoreTimestamps(rawShipment);
+    
     const updatesSnapshot = await db.collection('tracking_updates').where('shipment_id', '==', doc.id).get();
-    const updates = updatesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const rawUpdates = updatesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const updates = convertFirestoreTimestamps(rawUpdates);
     
     res.json({ ...shipment, updates });
   } catch (error) {
@@ -982,7 +1008,8 @@ app.get('/api/track/:trackingNumber', async (req, res) => {
     const snapshot = await db.collection('shipments').where('tracking_number', '==', trackingNumber).get();
     if (!snapshot.empty) {
       const doc = snapshot.docs[0];
-      shipment = { id: doc.id, ...doc.data() };
+      const rawShipment = { id: doc.id, ...doc.data() };
+      shipment = convertFirestoreTimestamps(rawShipment);
     }
 
     if (shipment) {
