@@ -3,7 +3,14 @@ const admin = require('firebase-admin');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 require('dotenv').config({ override: true });
+
+try {
+  if (crypto.setFips !== undefined) {
+    try { crypto.setFips(false); } catch (_) {}
+  }
+} catch (_) {}
 
 const app = express();
 const PORT = process.env.PORT || 3007;
@@ -28,9 +35,41 @@ let firebaseInitError = null;
 try {
   const projectId = (process.env.FIREBASE_PROJECT_ID || '').trim();
   const clientEmail = (process.env.FIREBASE_CLIENT_EMAIL || '').trim();
-  const privateKey = (process.env.FIREBASE_PRIVATE_KEY || '')
-    .replace(/\\n/g, '\n')
-    .trim();
+  let privateKey = process.env.FIREBASE_PRIVATE_KEY || '';
+
+  privateKey = privateKey.trim();
+
+  if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+    privateKey = privateKey.slice(1, -1);
+  }
+  if (privateKey.startsWith("'") && privateKey.endsWith("'")) {
+    privateKey = privateKey.slice(1, -1);
+  }
+
+  privateKey = privateKey.replace(/\\n/g, '\n');
+  privateKey = privateKey.replace(/\\\\n/g, '\n');
+  privateKey = privateKey.replace(/\\r/g, '\r');
+  privateKey = privateKey.replace(/\\t/g, '\t');
+
+  privateKey = privateKey
+    .split('\n')
+    .map(l => l.trim())
+    .join('\n');
+
+  privateKey = privateKey.trim();
+
+  if (!privateKey.includes('-----BEGIN PRIVATE KEY-----')) {
+    const fromFile = path.join(__dirname, 'firebase-service-account.json');
+    if (fs.existsSync(fromFile)) {
+      try {
+        const raw = fs.readFileSync(fromFile, 'utf8');
+        const parsed = JSON.parse(raw);
+        if (parsed.private_key) {
+          privateKey = parsed.private_key.replace(/\\n/g, '\n').trim();
+        }
+      } catch (_) {}
+    }
+  }
 
   if (!projectId) {
     throw new Error('FIREBASE_PROJECT_ID is missing from .env');
@@ -46,9 +85,37 @@ try {
 
   if (!privateKey.includes('-----BEGIN PRIVATE KEY-----')) {
     throw new Error(
-      'FIREBASE_PRIVATE_KEY is malformed. Check your .env file.'
+      'FIREBASE_PRIVATE_KEY is malformed. Ensure it contains \\n escape sequences or actual newlines, and starts with -----BEGIN PRIVATE KEY-----.'
     );
   }
+
+  if (!privateKey.includes('-----END PRIVATE KEY-----')) {
+    throw new Error(
+      'FIREBASE_PRIVATE_KEY is malformed: missing -----END PRIVATE KEY----- footer.'
+    );
+  }
+
+  try {
+    const dummySign = crypto.createSign('RSA-SHA256');
+    dummySign.update('hilton-cargo-pem-check');
+    dummySign.sign(privateKey, 'base64');
+  } catch (cryptoErr) {
+    throw new Error(
+      'FIREBASE_PRIVATE_KEY PEM validation failed: ' + cryptoErr.message +
+      ' (This means the key format is broken - ensure \\n escapes are preserved in Render env vars.)'
+    );
+  }
+
+  console.log('');
+  console.log('Firebase credential diagnostics:');
+  console.log('  Project ID     :', projectId ? 'OK (' + projectId + ')' : 'MISSING');
+  console.log('  Client Email   :', clientEmail ? 'OK (' + clientEmail + ')' : 'MISSING');
+  console.log('  Private Key    :', privateKey && privateKey.includes('BEGIN PRIVATE KEY')
+    ? 'OK (length=' + privateKey.length + ' chars, PEM validated)'
+    : 'MALFORMED');
+  console.log('  Node.js version:', process.version);
+  console.log('  OpenSSL version:', process.versions.openssl || 'unknown');
+  console.log('');
 
   admin.initializeApp({
     credential: admin.credential.cert({
