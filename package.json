@@ -9,8 +9,9 @@
     "tailwind:build": "node build-tailwind.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
     "firebase-admin": "^12.0.0"
   },
   "devDependencies": {

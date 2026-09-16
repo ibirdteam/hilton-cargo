@@ -3,21 +3,7 @@ const admin = require('firebase-admin');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-
-(function loadDotenv() {
-  const envPath = path.join(__dirname, '.env');
-  if (!fs.existsSync(envPath)) return;
-  const raw = fs.readFileSync(envPath, 'utf8');
-  raw.split(/\r?\n/).forEach(line => {
-    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
-    if (!m) return;
-    let val = m[2];
-    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-      val = val.slice(1, -1);
-    }
-    if (process.env[m[1]] === undefined) process.env[m[1]] = val;
-  });
-})();
+require('dotenv').config({ override: true });
 
 const app = express();
 const PORT = process.env.PORT || 3007;
@@ -35,279 +21,101 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.htm'));
 });
 
-const createInMemoryDb = () => ({
-  _data: {
-    shipments: [
-      {
-        id: '1',
-        tracking_number: 'HC123456789',
-        customer_name: 'John Doe',
-        sender_name: 'John Doe',
-        sender_email: 'john.doe@example.com',
-        sender_address: '123 Broadway Ave, New York, NY 10001',
-        sender_phone: '+1 (555) 123-4567',
-        sender_country: 'United States',
-        receiver_name: 'Emily Carter',
-        receiver_email: 'emily.carter@example.com',
-        receiver_address: '456 Hollywood Blvd, Los Angeles, CA 90028',
-        receiver_phone: '+1 (555) 987-6543',
-        receiver_country: 'United States',
-        package_description: 'Electronics — 2 laptops, 1 tablet, accessories',
-        package_weight: 2.5,
-        date_sent: '2026-09-10T09:30:00.000Z',
-        date_expected: '2026-09-17T18:00:00.000Z',
-        progress_pct: 40,
-        current_location: 'Denver Distribution Center, CO',
-        invoice_created_at: '2026-09-10T08:00:00.000Z',
-        total_amount: 799.00,
-        origin: 'New York, NY',
-        destination: 'Los Angeles, CA',
-        service_type: 'Express',
-        status: 'in_transit',
-        weight: 2.5,
-        created_at: '2026-09-10T08:00:00.000Z',
-        updated_at: '2026-09-12T14:20:00.000Z'
-      },
-      {
-        id: '2',
-        tracking_number: 'HC987654321',
-        customer_name: 'Jane Smith',
-        sender_name: 'Jane Smith',
-        sender_email: 'jane.smith@example.com',
-        sender_address: '789 Michigan Ave, Chicago, IL 60601',
-        sender_phone: '+1 (555) 222-3344',
-        sender_country: 'United States',
-        receiver_name: 'Michael Brown',
-        receiver_email: 'michael.brown@example.com',
-        receiver_address: '321 Main St, Houston, TX 77002',
-        receiver_phone: '+1 (555) 444-5566',
-        receiver_country: 'United States',
-        package_description: 'Industrial Machine Parts — 3 crates, heavy machinery components',
-        package_weight: 5.0,
-        date_sent: '2026-09-01T10:15:00.000Z',
-        date_expected: '2026-09-08T17:00:00.000Z',
-        progress_pct: 100,
-        current_location: 'Houston, TX — Delivered',
-        invoice_created_at: '2026-09-01T09:00:00.000Z',
-        total_amount: 199.00,
-        origin: 'Chicago, IL',
-        destination: 'Houston, TX',
-        service_type: 'Standard',
-        status: 'delivered',
-        weight: 5.0,
-        created_at: '2026-09-01T09:00:00.000Z',
-        updated_at: '2026-09-07T15:45:00.000Z'
-      },
-      {
-        id: '3',
-        tracking_number: 'HC456123789',
-        customer_name: 'Robert Johnson',
-        sender_name: 'Robert Johnson',
-        sender_email: 'robert.johnson@example.com',
-        sender_address: '100 Ocean Dr, Miami, FL 33139',
-        sender_phone: '+1 (555) 777-8899',
-        sender_country: 'United States',
-        receiver_name: 'Sarah Williams',
-        receiver_email: 'sarah.williams@example.com',
-        receiver_address: '555 Pine St, Seattle, WA 98101',
-        receiver_phone: '+1 (555) 111-2233',
-        receiver_country: 'United States',
-        package_description: 'Medical Supplies — Temperature-sensitive pharmaceuticals',
-        package_weight: 1.8,
-        date_sent: '2026-09-12T06:00:00.000Z',
-        date_expected: '2026-09-13T12:00:00.000Z',
-        progress_pct: 5,
-        current_location: 'Miami International Hub, FL',
-        invoice_created_at: '2026-09-12T05:30:00.000Z',
-        total_amount: 1299.00,
-        origin: 'Miami, FL',
-        destination: 'Seattle, WA',
-        service_type: 'Overnight',
-        status: 'pending',
-        weight: 1.8,
-        created_at: '2026-09-12T05:30:00.000Z',
-        updated_at: '2026-09-12T05:30:00.000Z'
-      }
-    ],
-    customers: [
-      { id: '1', name: 'John Doe', email: 'john.doe@example.com', phone: '+1 555 123 4567', city: 'New York, NY', created_at: new Date().toISOString() },
-      { id: '2', name: 'Jane Smith', email: 'jane.smith@example.com', phone: '+1 555 987 6543', city: 'Los Angeles, CA', created_at: new Date().toISOString() }
-    ],
-    services: [
-      { id: '1', name: 'Ocean Freight', description: 'Ship bulk goods globally with ease.', price: 499, icon: 'ship', created_at: new Date().toISOString() },
-      { id: '2', name: 'Road Freight', description: 'Swift and reliable road transport.', price: 199, icon: 'truck', created_at: new Date().toISOString() },
-      { id: '3', name: 'Air Freight', description: 'Global air shipping solutions.', price: 799, icon: 'plane', created_at: new Date().toISOString() },
-      { id: '4', name: 'Train Freight', description: 'Efficient rail transport.', price: 299, icon: 'train', created_at: new Date().toISOString() }
-    ],
-    tracking_updates: []
-  },
-
-  collection(name) {
-    const self = this;
-    return {
-      async get() {
-        const docs = self._data[name] || [];
-        return {
-          docs: docs.map(doc => ({ id: doc.id, data: () => ({ ...doc }) })),
-          get empty() { return docs.length === 0; },
-          get size() { return docs.length; }
-        };
-      },
-      async add(data) {
-        const id = Date.now().toString();
-        self._data[name].push({ id, ...data, created_at: new Date().toISOString() });
-        return { id };
-      },
-      limit(n) {
-        const docs = (self._data[name] || []).slice(0, n);
-        return {
-          async get() {
-            return {
-              docs: docs.map(doc => ({ id: doc.id, data: () => ({ ...doc }) })),
-              get empty() { return docs.length === 0; },
-              get size() { return docs.length; }
-            };
-          }
-        };
-      },
-      doc(id) {
-        return {
-          async get() {
-            const doc = self._data[name].find(d => d.id === id);
-            return {
-              get exists() { return !!doc; },
-              data() { return doc ? { ...doc } : undefined; }
-            };
-          },
-          async update(data) {
-            const index = self._data[name].findIndex(d => d.id === id);
-            if (index !== -1) {
-              self._data[name][index] = { ...self._data[name][index], ...data, updated_at: new Date().toISOString() };
-            }
-          },
-          async set(data) {
-            const index = self._data[name].findIndex(d => d.id === id);
-            if (index !== -1) {
-              self._data[name][index] = { ...self._data[name][index], ...data };
-            } else {
-              self._data[name].push({ id, ...data, created_at: new Date().toISOString() });
-            }
-          },
-          async delete() {
-            const index = self._data[name].findIndex(d => d.id === id);
-            if (index !== -1) {
-              self._data[name].splice(index, 1);
-            }
-          }
-        };
-      },
-      where(field, operator, value) {
-        const filtered = (self._data[name] || []).filter(doc => {
-          if (operator === '==') return doc[field] === value;
-          return true;
-        });
-        return {
-          async get() {
-            return {
-              get docs() { return filtered.map(doc => ({ id: doc.id, data: () => ({ ...doc }) })); },
-              get empty() { return filtered.length === 0; }
-            };
-          },
-          limit(n) {
-            const limited = filtered.slice(0, n);
-            return {
-              async get() {
-                return {
-                  docs: limited.map(doc => ({ id: doc.id, data: () => ({ ...doc }) })),
-                  get empty() { return limited.length === 0; }
-                };
-              }
-            };
-          }
-        };
-      }
-    };
-  }
-});
-
 let db;
 let firestoreDb = null;
 let firebaseInitError = null;
-let currentServiceAccountEmail = null;
-let currentProjectId = null;
+
 try {
-  const serviceAccountPath = path.join(__dirname, 'firebase-service-account.json');
-  if (!fs.existsSync(serviceAccountPath)) {
-    throw new Error('firebase-service-account.json not found at: ' + serviceAccountPath);
-  }
-  let serviceAccount;
-  try {
-    serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
-  } catch (parseErr) {
-    throw new Error('firebase-service-account.json is not valid JSON: ' + parseErr.message);
-  }
-  if (!serviceAccount || !serviceAccount.private_key || !serviceAccount.project_id || !serviceAccount.client_email) {
-    throw new Error('firebase-service-account.json is missing required fields (private_key, project_id, client_email). Did you download the correct file?');
-  }
-  if (serviceAccount.private_key.includes('-----BEGIN PRIVATE KEY-----') === false) {
-    throw new Error('Private key in firebase-service-account.json is malformed. It must start with "-----BEGIN PRIVATE KEY-----".');
+  const projectId = (process.env.FIREBASE_PROJECT_ID || '').trim();
+  const clientEmail = (process.env.FIREBASE_CLIENT_EMAIL || '').trim();
+  const privateKey = (process.env.FIREBASE_PRIVATE_KEY || '')
+    .replace(/\\n/g, '\n')
+    .trim();
+
+  if (!projectId) {
+    throw new Error('FIREBASE_PROJECT_ID is missing from .env');
   }
 
-  currentServiceAccountEmail = serviceAccount.client_email;
-  const explicitProjectId = (process.env.SERVER_FIREBASE_PROJECT_ID || serviceAccount.project_id || '').trim();
-  currentProjectId = explicitProjectId || serviceAccount.project_id || null;
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    ...(explicitProjectId ? { projectId: explicitProjectId } : {})
-  });
-  firestoreDb = admin.firestore();
-  try {
-    firestoreDb.settings({
-      ...(explicitProjectId ? { projectId: explicitProjectId } : {}),
-      ignoreUndefinedProperties: true
-    });
-  } catch (settingsErr) {
-    // Settings may already be applied; ignore.
+  if (!clientEmail) {
+    throw new Error('FIREBASE_CLIENT_EMAIL is missing from .env');
   }
+
+  if (!privateKey) {
+    throw new Error('FIREBASE_PRIVATE_KEY is missing from .env');
+  }
+
+  if (!privateKey.includes('-----BEGIN PRIVATE KEY-----')) {
+    throw new Error(
+      'FIREBASE_PRIVATE_KEY is malformed. Check your .env file.'
+    );
+  }
+
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId,
+      clientEmail,
+      privateKey
+    })
+  });
+
+  firestoreDb = admin.firestore();
+
+  firestoreDb.settings({
+    ignoreUndefinedProperties: true
+  });
+
   console.log('');
-  console.log('ℹ️  Firebase admin SDK initialized successfully.');
-  console.log('   Project ID     : ' + (explicitProjectId || '(auto)'));
-  console.log('   Service account: ' + serviceAccount.client_email);
-  console.log('   Verifying Firestore connection (up to 15s)...');
+  console.log('Firebase Admin SDK initialized successfully.');
+  console.log('Project ID     :', projectId);
+  console.log('Service account:', clientEmail);
+  console.log('Verifying Firestore connection...');
   console.log('');
+
 } catch (error) {
   firebaseInitError = error;
-  console.log('');
-  console.log('─────────────────────────────────────────────────────────────');
-  console.log('⚠️  FIREBASE SERVICE ACCOUNT INIT FAILED');
-  console.log('─────────────────────────────────────────────────────────────');
-  console.log('   Reason: ' + (error.message || String(error)));
-  console.log('');
-  console.log('   TROUBLESHOOTING:');
-  console.log('   • If the file does not exist:');
-  console.log('     Go to Firebase Console → Project Settings → Service Accounts');
-  console.log('     → Click "Generate new private key" → Download JSON');
-  console.log('     → Save it as firebase-service-account.json in this folder');
-  console.log('');
-  console.log('   • If the JSON is invalid:');
-  console.log('     Re-download the key from Firebase Console (do NOT edit it by hand)');
-  console.log('     and completely replace firebase-service-account.json');
-  console.log('─────────────────────────────────────────────────────────────');
-  console.log('   Falling back to in-memory demo data.');
-  console.log('─────────────────────────────────────────────────────────────');
-  console.log('');
-  db = createInMemoryDb();
+
+  console.error('');
+  console.error('────────────────────────────────────────────────────────');
+  console.error('FIREBASE INITIALIZATION FAILED');
+  console.error('────────────────────────────────────────────────────────');
+  console.error(error.message);
+  console.error('');
+
+  process.exit(1);
+}
+
+async function verifyFirestoreConnection() {
+  if (!firestoreDb) {
+    throw new Error('Firestore was not initialized.');
+  }
+
+  try {
+    await firestoreDb
+      .collection('services')
+      .limit(1)
+      .get();
+
+    console.log('Firebase credentials verified!');
+    console.log('Connected to Firestore successfully.');
+    console.log('');
+
+    return true;
+  } catch (error) {
+    console.error('');
+    console.error('────────────────────────────────────────────────────────');
+    console.error('FIRESTORE CONNECTION FAILED');
+    console.error('────────────────────────────────────────────────────────');
+    console.error(error.message);
+    console.error('');
+
+    throw error;
+  }
 }
 
 // --- API ENDPOINTS ---
 
 // Seed initial data
 const seedInitialData = async () => {
-  if (db._data) {
-    // In-memory mode already has data
-    return;
-  }
-
   // Check if we already have data
   const shipmentsSnapshot = await db.collection('shipments').limit(1).get();
   if (!shipmentsSnapshot.empty) {
@@ -429,10 +237,6 @@ const seedInitialData = async () => {
 
 // Helper function to get all docs from a collection
 const getDocuments = async (collectionName) => {
-  if (db._data && db._data[collectionName]) {
-    // In-memory mode
-    return db._data[collectionName];
-  }
   const snapshot = await db.collection(collectionName).get();
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
@@ -978,11 +782,6 @@ app.post('/api/shipments', async (req, res) => {
       updated_at: updated_at_ts
     };
 
-    if (db._data) {
-      data.created_at = normalized.created_at;
-      data.updated_at = normalized.updated_at;
-    }
-
     const result = await db.collection('shipments').add(data);
     res.status(201).json({ id: result.id, ...normalized });
   } catch (error) {
@@ -1006,11 +805,6 @@ app.put('/api/shipments/:id', async (req, res) => {
 
     const updated_at_ts = admin.firestore.FieldValue ? admin.firestore.FieldValue.serverTimestamp() : normalized.updated_at;
     const data = { ...normalized, updated_at: updated_at_ts };
-
-    if (db._data) {
-      data.updated_at = normalized.updated_at;
-      delete data.created_at;
-    }
 
     await docRef.update(data);
 
@@ -1070,10 +864,6 @@ app.post('/api/customers', async (req, res) => {
       created_at: admin.firestore.FieldValue.serverTimestamp()
     };
     
-    if (db._data) { // In-memory fallback
-      data.created_at = new Date().toISOString();
-    }
-    
     const result = await db.collection('customers').add(data);
     res.status(201).json({ id: result.id, ...data });
   } catch (error) {
@@ -1129,10 +919,6 @@ app.post('/api/services', async (req, res) => {
       created_at: admin.firestore.FieldValue.serverTimestamp()
     };
     
-    if (db._data) { // In-memory fallback
-      data.created_at = new Date().toISOString();
-    }
-    
     const result = await db.collection('services').add(data);
     res.status(201).json({ id: result.id, ...data });
   } catch (error) {
@@ -1169,10 +955,6 @@ app.post('/api/shipments/:id/tracking', async (req, res) => {
       timestamp: admin.firestore.FieldValue.serverTimestamp()
     };
     
-    if (db._data) { // In-memory fallback
-      trackingData.timestamp = new Date().toISOString();
-    }
-    
     await db.collection('tracking_updates').add(trackingData);
     
     // Update shipment status
@@ -1197,14 +979,10 @@ app.get('/api/track/:trackingNumber', async (req, res) => {
     const trackingNumber = req.params.trackingNumber.toUpperCase();
     let shipment;
 
-    if (db._data) { // In-memory mode
-      shipment = db._data.shipments.find(s => s.tracking_number.toUpperCase() === trackingNumber);
-    } else {
-      const snapshot = await db.collection('shipments').where('tracking_number', '==', trackingNumber).get();
-      if (!snapshot.empty) {
-        const doc = snapshot.docs[0];
-        shipment = { id: doc.id, ...doc.data() };
-      }
+    const snapshot = await db.collection('shipments').where('tracking_number', '==', trackingNumber).get();
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      shipment = { id: doc.id, ...doc.data() };
     }
 
     if (shipment) {
@@ -1222,31 +1000,20 @@ app.get('/api/dashboard/stats', async (req, res) => {
   try {
     let totalShipments, totalCustomers, totalRevenue = 0, onTimeDeliveries = 0;
 
-    if (db._data) { // In-memory mode
-      totalShipments = db._data.shipments.length;
-      totalCustomers = db._data.customers.length;
-      db._data.services.forEach(service => totalRevenue += (service.price || 0));
-      db._data.shipments.forEach(shipment => {
-        if (shipment.status === 'delivered') {
-          onTimeDeliveries++;
-        }
-      });
-    } else {
-      const [shipmentsSnapshot, customersSnapshot, servicesSnapshot] = await Promise.all([
-        db.collection('shipments').get(),
-        db.collection('customers').get(),
-        db.collection('services').get()
-      ]);
-      totalShipments = shipmentsSnapshot.size;
-      totalCustomers = customersSnapshot.size;
-      const services = servicesSnapshot.docs.map(doc => doc.data());
-      services.forEach(service => totalRevenue += (service.price || 0));
-      shipmentsSnapshot.docs.forEach(doc => {
-        if (doc.data().status === 'delivered') {
-          onTimeDeliveries++;
-        }
-      });
-    }
+    const [shipmentsSnapshot, customersSnapshot, servicesSnapshot] = await Promise.all([
+      db.collection('shipments').get(),
+      db.collection('customers').get(),
+      db.collection('services').get()
+    ]);
+    totalShipments = shipmentsSnapshot.size;
+    totalCustomers = customersSnapshot.size;
+    const services = servicesSnapshot.docs.map(doc => doc.data());
+    services.forEach(service => totalRevenue += (service.price || 0));
+    shipmentsSnapshot.docs.forEach(doc => {
+      if (doc.data().status === 'delivered') {
+        onTimeDeliveries++;
+      }
+    });
     
     res.json({
       totalShipments,
@@ -1293,19 +1060,14 @@ app.get('/admin/receipt', async (req, res) => {
 
     let shipment = null;
 
-    if (db._data) {
-      shipment = db._data.shipments.find(s => s.id === shipmentId);
-      if (shipment) shipment = { ...shipment };
-    } else {
-      const doc = await db.collection('shipments').doc(shipmentId).get();
-      if (doc.exists) {
-        shipment = { id: doc.id, ...doc.data() };
-        if (shipment.created_at && shipment.created_at.toDate) shipment.created_at = shipment.created_at.toDate().toISOString();
-        if (shipment.updated_at && shipment.updated_at.toDate) shipment.updated_at = shipment.updated_at.toDate().toISOString();
-        if (shipment.date_sent && shipment.date_sent.toDate) shipment.date_sent = shipment.date_sent.toDate().toISOString();
-        if (shipment.date_expected && shipment.date_expected.toDate) shipment.date_expected = shipment.date_expected.toDate().toISOString();
-        if (shipment.invoice_created_at && shipment.invoice_created_at.toDate) shipment.invoice_created_at = shipment.invoice_created_at.toDate().toISOString();
-      }
+    const doc = await db.collection('shipments').doc(shipmentId).get();
+    if (doc.exists) {
+      shipment = { id: doc.id, ...doc.data() };
+      if (shipment.created_at && shipment.created_at.toDate) shipment.created_at = shipment.created_at.toDate().toISOString();
+      if (shipment.updated_at && shipment.updated_at.toDate) shipment.updated_at = shipment.updated_at.toDate().toISOString();
+      if (shipment.date_sent && shipment.date_sent.toDate) shipment.date_sent = shipment.date_sent.toDate().toISOString();
+      if (shipment.date_expected && shipment.date_expected.toDate) shipment.date_expected = shipment.date_expected.toDate().toISOString();
+      if (shipment.invoice_created_at && shipment.invoice_created_at.toDate) shipment.invoice_created_at = shipment.invoice_created_at.toDate().toISOString();
     }
 
     if (!shipment) {
@@ -1336,19 +1098,14 @@ app.get('/api/shipments/:id/download', async (req, res) => {
     const shipmentId = req.params.id;
     let shipment = null;
 
-    if (db._data) {
-      shipment = db._data.shipments.find(s => s.id === shipmentId);
-      if (shipment) shipment = { ...shipment };
-    } else {
-      const doc = await db.collection('shipments').doc(shipmentId).get();
-      if (doc.exists) {
-        shipment = { id: doc.id, ...doc.data() };
-        if (shipment.created_at && shipment.created_at.toDate) shipment.created_at = shipment.created_at.toDate().toISOString();
-        if (shipment.updated_at && shipment.updated_at.toDate) shipment.updated_at = shipment.updated_at.toDate().toISOString();
-        if (shipment.date_sent && shipment.date_sent.toDate) shipment.date_sent = shipment.date_sent.toDate().toISOString();
-        if (shipment.date_expected && shipment.date_expected.toDate) shipment.date_expected = shipment.date_expected.toDate().toISOString();
-        if (shipment.invoice_created_at && shipment.invoice_created_at.toDate) shipment.invoice_created_at = shipment.invoice_created_at.toDate().toISOString();
-      }
+    const doc = await db.collection('shipments').doc(shipmentId).get();
+    if (doc.exists) {
+      shipment = { id: doc.id, ...doc.data() };
+      if (shipment.created_at && shipment.created_at.toDate) shipment.created_at = shipment.created_at.toDate().toISOString();
+      if (shipment.updated_at && shipment.updated_at.toDate) shipment.updated_at = shipment.updated_at.toDate().toISOString();
+      if (shipment.date_sent && shipment.date_sent.toDate) shipment.date_sent = shipment.date_sent.toDate().toISOString();
+      if (shipment.date_expected && shipment.date_expected.toDate) shipment.date_expected = shipment.date_expected.toDate().toISOString();
+      if (shipment.invoice_created_at && shipment.invoice_created_at.toDate) shipment.invoice_created_at = shipment.invoice_created_at.toDate().toISOString();
     }
 
     if (!shipment) {
@@ -1529,171 +1286,77 @@ process.on('uncaughtException', (error) => {
   console.error('Uncaught exception:', error);
 });
 
-(async () => {
-  if (!db && firestoreDb) {
-    try {
-      await new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => reject(new Error('__timeout__')), 15000);
-        firestoreDb.collection('services').limit(1).get()
-          .then(() => { clearTimeout(timeout); resolve(); })
-          .catch((err) => { clearTimeout(timeout); reject(err); });
-      });
-      db = firestoreDb;
-      console.log('✅ Firebase credentials verified! Connected to Firestore successfully.');
-      console.log('');
-    } catch (verificationError) {
-      let reasonLabel, troubleshooting;
-      const isTimeout = verificationError && verificationError.message === '__timeout__';
-      const errCode = verificationError && !isTimeout ? (verificationError.code || '') : '';
-      const errMsg = verificationError && !isTimeout ? (verificationError.message || '') : '';
-
-      if (isTimeout) {
-        reasonLabel = 'Connection timed out (15s)';
-        troubleshooting = [
-          '• Internet connection is unstable or offline',
-          '• Firewall / proxy is blocking connections to Google APIs (port 443)',
-          '• Firebase servers are temporarily unavailable (check status.firebase.google.com)',
-          '• The Firestore database region is very far from this server (try using a closer region)'
-        ];
-      } else if (errCode === 7 || /permission/i.test(errMsg)) {
-        reasonLabel = 'PERMISSION_DENIED (IAM role missing)';
-        const projectForIam = currentProjectId || 'YOUR_PROJECT_ID';
-        const saForIam = currentServiceAccountEmail || 'YOUR_SERVICE_ACCOUNT_EMAIL';
-        troubleshooting = [
-          'Your service account lacks Firestore permissions. Go to Google Cloud Console:',
-          '  https://console.cloud.google.com/iam-admin/iam?project=' + projectForIam,
-          '  → Find the service account: ' + saForIam,
-          '  → Click "Edit" (pencil) → "Add another role" → grant one of these:',
-          '    - Firebase Admin SDK Administrator Service Agent (recommended)',
-          '    - Cloud Datastore User',
-          '    - Firebase Firestore Service Agent',
-          '    - Owner (for testing only, not recommended for production)'
-        ];
-      } else if (errCode === 5 || /not.?found/i.test(errMsg)) {
-        reasonLabel = 'NOT_FOUND (Firestore database not created)';
-        const projectForFirestore = currentProjectId || 'YOUR_PROJECT_ID';
-        troubleshooting = [
-          'You must create the Firestore database first! Go to Firebase Console:',
-          '  https://console.firebase.google.com/project/' + projectForFirestore + '/firestore',
-          '  → Click "Create database"',
-          '  → Choose "Start in production mode" (or test mode for development)',
-          '  → Choose a location (e.g., nam5, us-central, europe-west, asia-east)',
-          '  → Click "Enable"',
-          '  Then wait 2-3 minutes and restart this server.'
-        ];
-      } else if (errCode === 16 || /unauthenticated/i.test(errMsg) || /invalid.*credential/i.test(errMsg)) {
-        reasonLabel = 'UNAUTHENTICATED (Credentials invalid/revoked)';
-        const projectForSa = currentProjectId || 'YOUR_PROJECT_ID';
-        troubleshooting = [
-          'The private key in firebase-service-account.json has been REVOKED, DELETED, or was NEVER ACTIVATED.',
-          'You MUST generate a NEW key from Firebase Console:',
-          '  1. Go to: https://console.firebase.google.com/project/' + projectForSa + '/settings/serviceaccounts/adminsdk',
-          '  2. Make sure "Node.js" is selected at the top',
-          '  3. Click the BIG BLUE BUTTON: "Generate new private key"',
-          '  4. A warning pop-up appears → click "Generate key"',
-          '  5. A JSON file will be downloaded to your computer',
-          '  6. RENAME the downloaded file to: firebase-service-account.json',
-          '  7. COPY and REPLACE it into this folder, overwriting the existing old one',
-          '  8. Restart this server (Ctrl+C, then: node server.js)',
-          '',
-          '   ⚠️  IMPORTANT: Do NOT edit the downloaded JSON file by hand.',
-          '   Each line, every character matters (including the "-----BEGIN PRIVATE KEY-----" block).',
-          '   Just download → rename → copy → paste → overwrite.'
-        ];
-      } else if (errCode === 14 || /unavailable/i.test(errMsg)) {
-        reasonLabel = 'UNAVAILABLE (Service or network issue)';
-        troubleshooting = [
-          '• Check your internet connection (can you open google.com?)',
-          '• Firebase service outage: check https://status.firebase.google.com',
-          '• Project ID mismatch: compare project_id in firebase-service-account.json',
-          '  with the project ID in Firebase Console.'
-        ];
-      } else {
-        reasonLabel = (verificationError && (verificationError.code || verificationError.message)) || 'Unknown error';
-        troubleshooting = [
-          'Please share the full error output above with support, or:',
-          '• Regenerate a new service account key as described in the UNAUTHENTICATED case above',
-          '• Make sure you are replacing the ENTIRE firebase-service-account.json file (not editing it)',
-          '• Check that Firestore is created in Firebase Console → Firestore Database'
-        ];
-      }
-
-      console.log('');
-      console.log('─────────────────────────────────────────────────────────────────────');
-      console.log('⚠️  FIREBASE CONNECTION FAILED');
-      console.log('─────────────────────────────────────────────────────────────────────');
-      console.log('   Reason: ' + reasonLabel);
-      if (!isTimeout && errMsg && !reasonLabel.includes(errMsg)) {
-        console.log('   Details: ' + errMsg);
-      }
-      console.log('');
-      console.log('   🔧 TROUBLESHOOTING:');
-      troubleshooting.forEach(line => console.log('   ' + line));
-      console.log('');
-      console.log('   Until fixed: Server will use IN-MEMORY demo data.');
-      console.log('   (Shipments you create now will be LOST when the server restarts.)');
-      console.log('─────────────────────────────────────────────────────────────────────');
-      console.log('');
-      db = createInMemoryDb();
-    }
-  }
-
-  if (!db) {
-    db = createInMemoryDb();
-  }
-
+async function startServer() {
   try {
-    if (!db._data) {
-      await seedInitialData();
-    }
-  } catch (error) {
-    console.error('Failed to seed initial data, starting server anyway:', error);
-  }
+    await verifyFirestoreConnection();
 
-  const basePort = Number(PORT) || 3007;
-  const maxAttempts = 20;
+    db = firestoreDb;
 
-  const startServer = (port, attempt = 0) => {
-    const server = app.listen(port, () => {
-      console.log('');
-      console.log('╔══════════════════════════════════════════════════════════════════╗');
-      console.log('║          🚀  HILTON CARGO SERVER STARTED SUCCESSFULLY              ║');
-      console.log('╚══════════════════════════════════════════════════════════════════╝');
-      console.log('');
-      console.log('   🌐 Website              : http://localhost:' + port);
-      console.log('   📊 Admin Dashboard   : http://localhost:' + port + '/admin/index.html');
-      console.log('   📦 Shipments   : http://localhost:' + port + '/admin/shipments.html');
-      console.log('');
-      if (db._data) {
-        console.log('   🗄️  DATABASE MODE  : IN-MEMORY (DEMO ONLY — DATA NOT PERSISTED');
+    console.log('Firestore database is ready.');
+    console.log('Database mode: FIREBASE FIRESTORE');
+    console.log('');
+
+    await seedInitialData();
+
+    const basePort = Number(PORT) || 3007;
+    const maxAttempts = 20;
+
+    const startListening = (port, attempt = 0) => {
+      const server = app.listen(port, () => {
         console.log('');
-        console.log('   ⚠️  WARNING: Shipments/customers you create/edit will be LOST when');
-        console.log('      the server restarts! To fix this, see instructions above,');
-        console.log('      or read the TROUBLESHOOTING steps that were printed.');
-        console.log('      You need: a valid service account + Firestore database.');
-      } else {
-        console.log('   🗄️  DATABASE MODE  : FIREBASE FIRESTORE (PERSISTENT)');
-        console.log('   ✅ All data is saved to the cloud and will survive restarts.');
-      }
-      console.log('');
-      console.log('───────────────────────────────────────────────────────────────────');
-      console.log('');
-    });
+        console.log('╔══════════════════════════════════════════════════════════╗');
+        console.log('║       🚀 HILTON CARGO SERVER STARTED SUCCESSFULLY       ║');
+        console.log('╚══════════════════════════════════════════════════════════╝');
+        console.log('');
 
-    server.on('error', (error) => {
-      if (error && error.code === 'EADDRINUSE' && attempt < maxAttempts) {
-        console.error(`Port ${port} is already in use. Trying port ${port + 1}...`);
-        startServer(port + 1, attempt + 1);
-        return;
-      }
+        console.log('🌐 Website        : http://localhost:' + port);
+        console.log(
+          '📊 Admin Dashboard: http://localhost:' +
+          port +
+          '/admin/index.html'
+        );
+        console.log(
+          '📦 Shipments      : http://localhost:' +
+          port +
+          '/admin/shipments.html'
+        );
+        console.log('');
+        console.log('🗄️  DATABASE MODE  : FIREBASE FIRESTORE');
+        console.log('✅ Data will persist in Firestore.');
+        console.log('');
+      });
 
-      console.error('Failed to start server:', error);
-      process.exit(1);
-    });
-  };
+      server.on('error', (error) => {
+        if (error.code === 'EADDRINUSE' && attempt < maxAttempts) {
+          console.log(
+            `Port ${port} is already in use. Trying port ${port + 1}...`
+          );
 
-  startServer(basePort);
-})().catch((error) => {
-  console.error('Failed to start server:', error);
-  process.exit(1);
-});
+          startListening(port + 1, attempt + 1);
+          return;
+        }
+
+        console.error('Failed to start server:', error);
+        process.exit(1);
+      });
+    };
+
+    startListening(basePort);
+
+  } catch (error) {
+    console.error('');
+    console.error('╔══════════════════════════════════════════════════════════╗');
+    console.error('║             FIRESTORE CONNECTION FAILED                 ║');
+    console.error('╚══════════════════════════════════════════════════════════╝');
+    console.error('');
+    console.error(error.message);
+    console.error('');
+    console.error(
+      'Server was NOT started because Firestore is unavailable.'
+    );
+    console.error('');
+    process.exit(1);
+  }
+}
+
+startServer();
